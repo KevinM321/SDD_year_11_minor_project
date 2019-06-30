@@ -1,0 +1,69 @@
+#:import CardTransition kivy.uix.screenmanager.CardTransition
+
+<ProfileScreen@Screen>:
+    name: 'profile_screen'
+    screen_manager: self.screen_manager
+
+    ProfileScreenLayout:
+        screen_manager: root.screen_manager
+
+<ProfileScreenLayout>:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: top_height
+        canvas:
+            Color:
+                rgba: 0.25, 0.25, 0.25, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        InterfaceButton:
+            on_release: root.screen_manager.transition = FadeTransition()
+            on_release: root.screen_manager.current = 'shop_screen'
+            background_normal: 'res/Images/home_button.png'
+            background_down: 'res/Images/home_button.png'
+            size: 45, 45
+
+        Label:
+            pos: 0, 1
+            size_hint: .8, 1
+        InterfaceButton:
+            on_press: root.screen_manager.transition = FadeTransition()
+            on_release: root.screen_manager.current = 'profile_screen'
+            text: '[b]Profile[/b]'
+        InterfaceButton:
+            on_press: root.screen_manager.transition = FadeTransition()
+            on_release: root.screen_manager.current = "cart_screen"
+            text: '[b]Cart[/b]'
+        InterfaceButton:
+            on_press: root.screen_manager.transition = FadeTransition()
+            on_release: root.screen_manager.current = 'lucky_draw_screen'
+            text: '[b]Lucky Draw[/b]'
+    Label:
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: top_height
+        canvas:
+            Color:
+                rgba: 0.25, 0.25, 0.25, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            pos: 0, 1
+            size_hint: .8, 1
+        InterfaceButton:
+            on_release:
+            text: '[b]Change Password[/b]'
+        InterfaceButton:
+#            on_release: root.screen_manager.current = ''
+            text: '[b]Card[/b]'
+        InterfaceButton:
+            on_release: root.screen_manager.current = 'login_screen'
+            on_release: root.screen_manager.transition = CardTransition(direction='down', mode='push')
+            text: '[b]Logout[/b]'

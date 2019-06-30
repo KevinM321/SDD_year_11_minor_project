@@ -1,0 +1,47 @@
+<CartScreen@Screen>:
+    name: 'cart_screen'
+    screen_manager: self.screen_manager
+
+    CartScreenLayout:
+        screen_manager: root.screen_manager
+
+<CartItem>:
+    spacing: 60
+    Label:
+        text: root.name
+    Label:
+        text: str(root.quantity)
+
+<CartLayout>:
+    orientation: 'vertical'
+    top:
+
+<CartScreenLayout>:
+    orientation: 'vertical'
+    id: screen_manager
+    screen_manager: root.screen_manager
+
+    ToolBarHeader:
+        screen_manager: root.screen_manager
+    CartLayout:
+
+    BoxLayout:
+        orientation: 'horizontal'
+        markup: True
+        size_hint: 1, None
+        height: top_height
+        canvas:
+            Color:
+                rgba: 0.25, 0.25, 0.25, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            pos: 0, 1
+            size_hint: .8, 1
+        InterfaceButton:
+            on_release: root.screen_manager.current = "shop_screen"
+            text: '[b]Shop For More[/b]'
+        InterfaceButton:
+            on_release:
+            text: '[b]Pay[/b]'

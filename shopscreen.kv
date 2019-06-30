@@ -1,0 +1,126 @@
+#:set top_height 45
+#:import CardTransition kivy.uix.screenmanager.CardTransition
+
+<ShopScreen@Screen>:
+    name: 'shop_screen'
+    screen_manager: self.screen_manager
+
+    ShopScreenLayout:
+        screen_manager: root.screen_manager
+
+<InterfaceButton>:
+    size_hint: None, None
+    markup: True
+    font_size: 15
+    size: 100, 45
+
+
+<ItemButton>:
+    # draw border in canvas
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 0.5
+        Line:
+            rectangle: 0, 0, self.width, self.height
+
+    Image:
+        source: root.img_path
+        pos_hint: {"bottom": 0}
+
+<ToolBarHeader>:
+    orientation: 'horizontal'
+    id: screen_manager
+    size_hint: 1, None
+    height: top_height
+    canvas:
+        Color:
+            rgba: 0.25, 0.25, 0.25, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    InterfaceButton:
+        on_release: root.screen_manager.transition = FadeTransition()
+        on_release: root.screen_manager.current = 'shop_screen'
+        background_normal: 'res/Images/home_button.png'
+        background_down: 'res/Images/home_button.png'
+        size: 45, 45
+
+    Label:
+        pos: 0, 1
+        size_hint: .8, 1
+    InterfaceButton:
+        on_press: root.screen_manager.transition = FadeTransition()
+        on_release: root.screen_manager.current = 'profile_screen'
+        text: '[b]Profile[/b]'
+    InterfaceButton:
+        on_press: root.screen_manager.transition = FadeTransition()
+        on_release: root.screen_manager.current = "cart_screen"
+        text: '[b]Cart[/b]'
+    InterfaceButton:
+        on_press: root.screen_manager.transition = FadeTransition()
+        on_release: root.screen_manager.current = 'lucky_draw_screen'
+        on_release: print(root.screen_manager.current)
+        text: '[b]Lucky Draw[/b]'
+
+<PopupLayout>:
+    orientation: 'vertical'
+    Image:
+        source: root.img_path
+    Label:
+        markup: True
+        text: '[b]$' + str(root.price) + '[/b]'
+    Label:
+        text: root.description
+    BoxLayout:
+        Button:
+            text:'-'
+            on_release:
+                try: root.quantity -= 1
+                except ValueError: pass
+        Label:
+            text: str(root.quantity)
+        Button:
+            text: '+'
+            on_release:
+                try: root.quantity += 1
+                except ValueError: pass
+
+
+<ShopScreenLayout>:
+    orientation: 'vertical'
+    id: screen_manager
+    screen_manager: root.screen_manager
+    spacing: 20
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'res/Images/metal_shelf.png'
+
+    ToolBarHeader:
+        screen_manager: root.screen_manager
+
+    ItemLayout:
+        cols: 3
+        padding: 10
+        spacing: 30
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, None
+        height: top_height
+        canvas:
+            Color:
+                rgba: 0.25, 0.25, 0.25, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            pos: 0, 1
+            size_hint: .8, 1
+        InterfaceButton:
+            text: '[b]Pay[/b]'
+            on_press: root.screen_manager.transition = FadeTransition()
+#           on_release: root.screen_manager.current = "pay_screen"

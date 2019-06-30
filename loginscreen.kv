@@ -1,0 +1,111 @@
+<MyButton>:
+    font_size: 16
+    size_hint: None, None
+    size: 125, 50
+    markup: True
+
+<InputBox@BoxLayout>:
+    l_text: ""
+    password: False
+    input_text: ''  # for testing only
+    orientation: 'horizontal'
+    pos_hint: {"center_x": .5}
+    text: _text_input.text
+    size_hint_x: None
+    width: self.minimum_width
+
+    Label:
+        markup: True
+        size_hint: None, None
+        size: 100,50
+        text: '[b]' + root.l_text + '[/b]'
+
+    TextInput:
+        id: _text_input
+        multiline: False
+        write_tab: False
+        padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]
+        size_hint: None, None
+        size: 250, 50
+        cursor_color: 0, 0, 0, 1
+        text: root.input_text
+        password: root.password
+
+<PasswordLayout@BoxLayout>:
+    psw_input: _psw_input
+    size_hint_x: None
+    width: self.minimum_width
+    pos_hint: {"center_x": .55}
+    spacing: 50
+    InputBox:
+        id: _psw_input
+        l_text: "Password"
+        input_text: "qwerty"
+        password: True
+        center_x: root.center_x
+    PasswordMask:
+        psw_input: _psw_input
+        text: 'Show'
+        left: _psw_input.right
+        size_hint_x: None
+        width: 100
+
+<LoginScreenLayout>
+    usr_name_input: _usr_name_input
+    psw_input: _psw_input.psw_input
+    orientation: "vertical"
+    spacing: 10
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'res/Images/metal_grid.jpg'
+
+    Image:
+        source: 'res/Images/energy_max.png'
+        center_x: root.center_x
+
+    BoxLayout:
+        size_hint_x: None
+        width: self.minimum_width
+        pos_hint: {"center_x": .55}
+        InputBox:
+            id: _usr_name_input
+            l_text: 'Username'
+            input_text: "Edward"
+        Widget:
+            size_hint_x: None
+            width: 150
+
+    PasswordLayout:
+        id: _psw_input
+
+    BoxLayout:
+
+        orientation: 'horizontal'
+        spacing: 150
+        Label:
+            size_hint: .5, .5
+
+        MyButton:
+            pos_hint: {'center_x': .5}
+            text: '[b]Login[/b]'
+            on_release: root.login()
+
+        MyButton:
+            pos_hint: {"center_x": .5}
+            text: '[b]Create account[/b]'
+            on_release: root.register()
+
+        Label:
+            size_hint: .5, .5
+    Label:
+        text: 'Made by Kevin Min'
+        size_hint: 1, .5
+
+<LoginScreen@Screen>:
+    name: 'login_screen'
+    screen_manager: self.screen_manager
+
+    LoginScreenLayout:
+        screen_manager: root.screen_manager

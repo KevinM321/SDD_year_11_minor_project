@@ -1,0 +1,17 @@
+#:import CardTransition kivy.uix.screenmanager.CardTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<EMScreenManager>:
+    id: _screen_manager
+    transition: CardTransition(direction="up")
+    current: 'shop_screen'
+    LoginScreen:
+        screen_manager: _screen_manager
+    ShopScreen:
+        screen_manager: _screen_manager
+    CartScreen:
+        screen_manager: _screen_manager
+    LuckyDrawScreen:
+        screen_manager: _screen_manager
+    ProfileScreen:
+        screen_manager: _screen_manager
