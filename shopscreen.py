@@ -15,7 +15,7 @@ item_data = (['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar
              ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'])
 
 
-item_quantity = {'k':1, 'e':2, 'v':3}
+item_quantity = {}
 
 
 class InterfaceButton(Button):
