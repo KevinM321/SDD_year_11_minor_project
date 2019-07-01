@@ -6,11 +6,11 @@ from kivy.uix.popup import Popup
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.label import Label
 
-item_data = (['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
-             ['Non-Fat Yogurt', 6.50, '!', 'res/Images/energy_max_bar.png'],
+item_data = (['Energy Max Bar', 3.50, 'Fuel yourself!', 'res/Images/energy_max_bar.png'],
+             ['Non-Fat Yogurt', 6.50, '!', 'res/Images/non_fat_yogurt.png'],
              ['Protein Shake', 7.00, 'Tastes horrible but is good for you', 'res/Images/energy_max_protein_shake.png'],
              ['Weight Loss Shake', 7.00, 'Lose weight!', 'res/Images/energy_max_weightloss_shake.png'],
-             ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
+             ['Gatorade Sports Drink', 3.50, 'Hydration!', 'res/Images/gatorade_drink.png'],
              ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
              ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'])
 

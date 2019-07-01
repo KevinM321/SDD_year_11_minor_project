@@ -60,7 +60,6 @@
     InterfaceButton:
         on_press: root.screen_manager.transition = FadeTransition()
         on_release: root.screen_manager.current = 'lucky_draw_screen'
-        on_release: print(root.screen_manager.current)
         text: '[b]Lucky Draw[/b]'
 
 <PopupLayout>:
@@ -121,6 +120,6 @@
             pos: 0, 1
             size_hint: .8, 1
         InterfaceButton:
-            text: '[b]Pay[/b]'
+            text: '[b]Checkout[/b]'
             on_press: root.screen_manager.transition = FadeTransition()
-#           on_release: root.screen_manager.current = "pay_screen"
+            on_release: root.screen_manager.current = "cart_screen"
