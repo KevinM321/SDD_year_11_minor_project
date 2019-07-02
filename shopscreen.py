@@ -6,13 +6,16 @@ from kivy.uix.popup import Popup
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.label import Label
 
-item_data = (['Energy Max Bar', 3.50, 'Fuel yourself!', 'res/Images/energy_max_bar.png'],
-             ['Non-Fat Yogurt', 6.50, '!', 'res/Images/non_fat_yogurt.png'],
-             ['Protein Shake', 7.00, 'Tastes horrible but is good for you', 'res/Images/energy_max_protein_shake.png'],
+item_data = (['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
+             ['Non-Fat Yogurt', 7.00, 'Good for you!', 'res/Images/non_fat_yogurt.png'],
+             ['Protein Shake', 7.00, 'Gain muscle!', 'res/Images/energy_max_protein_shake.png'],
              ['Weight Loss Shake', 7.00, 'Lose weight!', 'res/Images/energy_max_weightloss_shake.png'],
-             ['Gatorade Sports Drink', 3.50, 'Hydration!', 'res/Images/gatorade_drink.png'],
+             ['Gatorade Sports Drink', 4.50, 'Hydration!', 'res/Images/gatorade_drink.png'],
+             ['Beef Jerky', 3.50, 'Simply delicious!', 'res/Images/beef_jerky.png'],
              ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
-             ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'])
+             ['GFuel Energy', 7.00, 'Fuel yourself!', 'res/Images/gfuel_drink.png'],
+             ['Whey Protein Powder', 7.00, 'Do you know the Whey?', 'res/Images/whey_protein.png'],
+             ['Non-Fat Yogurt', 7.00, 'Good for you!', 'res/Images/non_fat_yogurt.png'])
 
 
 item_quantity = {}
