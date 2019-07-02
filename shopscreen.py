@@ -5,17 +5,18 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 
 item_data = (['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
              ['Non-Fat Yogurt', 7.00, 'Good for you!', 'res/Images/non_fat_yogurt.png'],
-             ['Protein Shake', 7.00, 'Gain muscle!', 'res/Images/energy_max_protein_shake.png'],
-             ['Weight Loss Shake', 7.00, 'Lose weight!', 'res/Images/energy_max_weightloss_shake.png'],
+             ['Protein Shake', 14.00, 'Gain muscle!', 'res/Images/energy_max_protein_shake.png'],
+             ['Weight Loss Shake', 14.00, 'Lose weight!', 'res/Images/energy_max_weightloss_shake.png'],
              ['Gatorade Sports Drink', 4.50, 'Hydration!', 'res/Images/gatorade_drink.png'],
-             ['Beef Jerky', 3.50, 'Simply delicious!', 'res/Images/beef_jerky.png'],
-             ['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
-             ['GFuel Energy', 7.00, 'Fuel yourself!', 'res/Images/gfuel_drink.png'],
-             ['Whey Protein Powder', 7.00, 'Do you know the Whey?', 'res/Images/whey_protein.png'],
-             ['Non-Fat Yogurt', 7.00, 'Good for you!', 'res/Images/non_fat_yogurt.png'])
+             ['Beef Jerky', 5.50, 'Simply delicious!', 'res/Images/beef_jerky.png'],
+             ['Mixed Berries', 4.50, 'Fruity!', 'res/Images/mixed_berries.png'],
+             ['GFuel Energy', 45.50, 'Fuel yourself!', 'res/Images/gfuel_drink.png'],
+             ['Whey Protein Powder', 57.00, 'Do you know the Whey?', 'res/Images/whey_protein.png'],
+             ['Energy Max Supplement', 18.50, 'Healthy!', 'res/Images/energy_max_supplement.png'])
 
 
 item_quantity = {}
@@ -93,6 +94,15 @@ class PopupLayout(BoxLayout):
 
     def clear(self, *args):
         item_quantity[self.name] = 0
+
+
+class ImageButton(Image):
+
+    def on_touch_down(self, touch):
+        image_popup = Popup(title='',
+                            content=Image(source=self.img_path),
+                            size_hint=(.8, .8))
+        image_popup.open()
 
 
 class ItemLayout(GridLayout):

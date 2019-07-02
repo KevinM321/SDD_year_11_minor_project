@@ -27,6 +27,10 @@
         source: root.img_path
         pos_hint: {"bottom": 0}
 
+<ImageButton>:
+    id: img_path
+
+
 <ToolBarHeader>:
     orientation: 'horizontal'
     id: screen_manager
@@ -64,9 +68,9 @@
 
 <PopupLayout>:
     orientation: 'vertical'
-    Image:
+    ImageButton:
+        img_path: root.img_path
         source: root.img_path
-    Label:
         markup: True
         text: '[b]$' + str(root.price) + '[/b]'
     Label:
