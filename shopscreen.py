@@ -34,6 +34,7 @@ class ToolBarHeader(BoxLayout):
     pass
 
 
+
 class ItemButton(RelativeLayout):
 
     name = StringProperty()
@@ -99,10 +100,11 @@ class PopupLayout(BoxLayout):
 class ImageButton(Image):
 
     def on_touch_down(self, touch):
-        image_popup = Popup(title='',
-                            content=Image(source=self.img_path),
-                            size_hint=(.8, .8))
-        image_popup.open()
+        if self.collide_point(*touch.pos):
+            image_popup = Popup(title='',
+                                content=Image(source=self.img_path),
+                                size_hint=(.75, .75))
+            image_popup.open()
 
 
 class ItemLayout(GridLayout):
