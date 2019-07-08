@@ -23,6 +23,9 @@ Builder.load_file('luckydrawscreen.kv')
 
 class EMScreenManager(ScreenManager):
     pass
+    # def on_current(self, instance, value):
+    #     if value == 'cart_screen':
+    #         CartLayout.display()
 
 
 class EnergyMaxApp(App):
