@@ -1,4 +1,4 @@
-from shopscreen import item_quantity
+# from shopscreen import item_quantity
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, NumericProperty
@@ -26,14 +26,13 @@ class CartLayout(BoxLayout):
     def __init__(self, **kwargs):
         super(CartLayout, self).__init__(**kwargs)
 
-        for widget in range(0, 9):
-            print(item_quantity[widget])
-        # for item in item_quantity:
-        #     name, quantity = item, item_quantity[item]
-        #     self.add_widget(CartItem(name=name,
-        #                              quantity=quantity,
-        #                              size_hint_y=None,
-        #                              height=50))
+    def display(self, item_quantity):
+        for item in item_quantity:
+            name, quantity = item, item_quantity[item]
+            self.add_widget(CartItem(name=name,
+                                     quantity=quantity,
+                                     size_hint_y=None,
+                                     height=50))
 
 
 
