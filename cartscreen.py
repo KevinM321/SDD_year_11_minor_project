@@ -23,17 +23,20 @@ class CartItem(BoxLayout):
 
 class CartLayout(BoxLayout):
 
+    cart = 0
+
     def __init__(self, **kwargs):
         super(CartLayout, self).__init__(**kwargs)
+        CartLayout.cart = self
 
-    def display(self, item_quantity):
+    @staticmethod
+    def display(item_quantity):
         for item in item_quantity:
             name, quantity = item, item_quantity[item]
-            self.add_widget(CartItem(name=name,
-                                     quantity=quantity,
-                                     size_hint_y=None,
-                                     height=50))
-
+            CartLayout.cart.add_widget(CartItem(name=name,
+                                                quantity=quantity,
+                                                size_hint_y=None,
+                                                height=50))
 
 
 
