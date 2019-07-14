@@ -2,6 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, NumericProperty
 from kivy.uix.label import Label
 
+
 class CartScreenLayout(BoxLayout):
     pass
 
@@ -30,7 +31,6 @@ class CartLayout(BoxLayout):
         CartLayout.cart.clear_widgets()
         counter = 0
         for item in item_quantity:
-            print(item_quantity[item])
             if item_quantity[item] != 0:
                 counter += 1
         if counter == 0:

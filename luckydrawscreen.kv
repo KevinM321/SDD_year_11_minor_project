@@ -5,42 +5,17 @@
     LuckyDrawScreenLayout:
         screen_manager: root.screen_manager
 
+
 <LuckyDrawScreenLayout>:
+    lucky_draw_display: _lucky_draw_display
     orientation: 'vertical'
+    ToolBarHeader:
+
     BoxLayout:
-        orientation: 'horizontal'
-        size_hint: 1, None
-        height: top_height
-        canvas:
-            Color:
-                rgba: 0.25, 0.25, 0.25, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        InterfaceButton:
-            on_release: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = 'shop_screen'
-            background_normal: 'res/Images/home_button.png'
-            background_down: 'res/Images/home_button.png'
-            size: 45, 45
-
         Label:
-            pos: 0, 1
-            size_hint: .8, 1
-        InterfaceButton:
-            on_press: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = 'profile_screen'
-            text: '[b]Profile[/b]'
-        InterfaceButton:
-            on_press: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = "cart_screen"
-            text: '[b]Cart[/b]'
-        InterfaceButton:
-            on_press: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = 'lucky_draw_screen'
-            text: '[b]Lucky Draw[/b]'
-    BoxLayout:
+        Image:
+            id: _lucky_draw_display
+        Label:
 
     BoxLayout:
         orientation: 'horizontal'
@@ -58,10 +33,7 @@
             size_hint: .8, 1
         InterfaceButton:
             text: '[b]Start[/b]'
+            on_release: root.lucky_draw()
         InterfaceButton:
             on_release: root.screen_manager.current = "shop_screen"
             text: '[b]Back[/b]'
-#        InterfaceButton:
-#            on_press: root.screen_manager.transition = FadeTransition()
-#            on_release: root.screen_manager.current = "lucky_draw_screen"
-#            text: '[b]Lucky Draw[/b]'
