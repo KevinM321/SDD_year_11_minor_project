@@ -9,12 +9,17 @@
 <LuckyDrawScreenLayout>:
     lucky_draw_display: _lucky_draw_display
     orientation: 'vertical'
+    id: screen_manager
+    screen_manager: root.screen_manager
+
     ToolBarHeader:
+        screen_manager: root.screen_manager
 
     BoxLayout:
         Label:
         Image:
             id: _lucky_draw_display
+            source: 'res/Images/question_mark.png'
         Label:
 
     BoxLayout:
@@ -34,6 +39,7 @@
         InterfaceButton:
             text: '[b]Start[/b]'
             on_release: root.lucky_draw()
+            on_release: root.t = 0
         InterfaceButton:
             on_release: root.screen_manager.current = "shop_screen"
             text: '[b]Back[/b]'
