@@ -1,6 +1,5 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
-# from kivy.uix.image import Image
 
 
 class ProfileScreenLayout(BoxLayout):
@@ -14,8 +13,20 @@ class ProfileScreenLayout(BoxLayout):
     @staticmethod
     def card_info():
         popup = Popup(title='',
-                      content=CardPopup(),
+                      content=CardInfoPopup(),
                       size_hint=(.75, .75))
+        popup.open()
+
+
+class CardInfoPopup(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(CardInfoPopup, self).__init__(**kwargs)
+
+    @staticmethod
+    def bind_card():
+        popup = Popup(title='',
+                      content=CardPopup())
         popup.open()
 
 

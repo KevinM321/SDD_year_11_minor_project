@@ -1,9 +1,11 @@
+#Button made for when specific sized button is needed
 <MyButton>:
     font_size: 16
     size_hint: None, None
     size: 125, 50
     markup: True
 
+#Input box designed for usr name and card details
 <InputBox@BoxLayout>:
     l_text: ""
     password: False
@@ -17,7 +19,7 @@
     Label:
         markup: True
         size_hint: None, None
-        size: 100,50
+        size: 150, 50
         text: '[b]' + root.l_text + '[/b]'
 
     TextInput:
@@ -31,6 +33,7 @@
         text: root.input_text
         password: root.password
 
+#Input box designed for important info (usr password)
 <PasswordLayout@BoxLayout>:
     psw_input: _psw_input
     size_hint_x: None

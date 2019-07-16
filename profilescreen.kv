@@ -8,6 +8,27 @@
         screen_manager: root.screen_manager
 
 <CardPopup>:
+    orientation: 'vertical'
+    Label:
+        markup: True
+        text: '[b]Card Info[b]'
+        font_size: 45
+    InputBox:
+        l_text: "Card Number"
+        input_text: ''
+        center_x: root.center_x
+    InputBox:
+        l_text: 'Card Pin'
+        input_text: ''
+        center_x: root.center_x
+    BoxLayout:
+        InputBox:
+        InputBox:
+        InputBox:
+    Label:
+
+
+<CardInfoPopup>:
     card_image: _card_image
     orientation: 'vertical'
     Image:
@@ -17,6 +38,7 @@
         Button:
             size_hint_y: .3
             text: 'Bind Card'
+            on_release: root.bind_card()
         Label:
             size_hint_x: .7
         Button:
