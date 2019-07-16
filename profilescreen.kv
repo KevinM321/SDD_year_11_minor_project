@@ -7,41 +7,29 @@
     ProfileScreenLayout:
         screen_manager: root.screen_manager
 
+<CardPopup>:
+    card_image: _card_image
+    orientation: 'vertical'
+    Image:
+        id: _card_image
+        source: 'res/Images/credit_card.png'
+    BoxLayout:
+        Button:
+            size_hint_y: .3
+            text: 'Bind Card'
+        Label:
+            size_hint_x: .7
+        Button:
+            size_hint_y: .3
+            text: 'Change Card'
+
 <ProfileScreenLayout>:
     orientation: 'vertical'
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: 1, None
-        height: top_height
-        canvas:
-            Color:
-                rgba: 0.25, 0.25, 0.25, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    id: screen_manager
+    screen_manager: root.screen_manager
 
-        InterfaceButton:
-            on_release: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = 'shop_screen'
-            background_normal: 'res/Images/home_button.png'
-            background_down: 'res/Images/home_button.png'
-            size: 45, 45
-
-        Label:
-            pos: 0, 1
-            size_hint: .8, 1
-        InterfaceButton:
-            on_press: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = 'profile_screen'
-            text: '[b]Profile[/b]'
-        InterfaceButton:
-            on_press: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = "cart_screen"
-            text: '[b]Cart[/b]'
-        InterfaceButton:
-            on_press: root.screen_manager.transition = FadeTransition()
-            on_release: root.screen_manager.current = 'lucky_draw_screen'
-            text: '[b]Lucky Draw[/b]'
+    ToolBarHeader:
+        screen_manager: root.screen_manager
     Label:
     BoxLayout:
         orientation: 'horizontal'
@@ -61,8 +49,8 @@
             on_release:
             text: '[b]Change Password[/b]'
         InterfaceButton:
-#            on_release: root.screen_manager.current = ''
-            text: '[b]Card[/b]'
+            on_release: root.card_info()
+            text: '[b]Card Info[/b]'
         InterfaceButton:
             on_release: root.screen_manager.current = 'login_screen'
             on_release: root.screen_manager.transition = CardTransition(direction='down', mode='push')
