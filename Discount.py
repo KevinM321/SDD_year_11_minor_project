@@ -5,7 +5,3 @@ def discount(regular_status, order):
     if order >= 250:
         discount_rate -= 0.1
     return discount_rate
-
-
-
-

@@ -7,6 +7,16 @@
     ProfileScreenLayout:
         screen_manager: root.screen_manager
 
+#Small input box designed as date boxes in CardPopup
+<SmallInputBox@TextInput>
+    multiline: False
+    write_tab: False
+    padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]
+    size_hint: None, None
+    size: 250, 50
+    cursor_color: 0, 0, 0, 1
+
+#Popup layout for binding or changing card bind
 <CardPopup>:
     orientation: 'vertical'
     Label:
@@ -22,12 +32,24 @@
         input_text: ''
         center_x: root.center_x
     BoxLayout:
-        InputBox:
-        InputBox:
-        InputBox:
+        size_hint_x: None
+        width: self.minimum_width
+        pos_hint: {"center_x": .5}
+        spacing: 8
+        Label:
+            text: '[b]Expiration Date[/b]'
+            markup: True
+            size_hint: None, None
+            size: 150, 50
+        SmallInputBox:
+            size: 80, 45
+        SmallInputBox:
+            size: 80, 45
+        SmallInputBox:
+            size: 80, 45
     Label:
 
-
+#Popup layout for card info
 <CardInfoPopup>:
     card_image: _card_image
     orientation: 'vertical'
@@ -45,6 +67,14 @@
             size_hint_y: .3
             text: 'Change Card'
 
+<ProfileImage>:
+
+<ProfileLayout>:
+    BoxLayout:
+        ProfileImage:
+
+            source:
+
 <ProfileScreenLayout>:
     orientation: 'vertical'
     id: screen_manager
@@ -52,7 +82,8 @@
 
     ToolBarHeader:
         screen_manager: root.screen_manager
-    Label:
+    ProfileImage:
+        source: 'res/Images/male_profile.png'
     BoxLayout:
         orientation: 'horizontal'
         size_hint: 1, None
