@@ -18,6 +18,7 @@
 
 #Popup layout for binding or changing card bind
 <CardPopup>:
+    bind_card_popup_footer: _bind_card_popup_footer
     orientation: 'vertical'
     Label:
         markup: True
@@ -47,7 +48,8 @@
             size: 80, 45
         SmallInputBox:
             size: 80, 45
-    Label:
+    BoxLayout:
+        id: _bind_card_popup_footer
 
 #Popup layout for card info
 <CardInfoPopup>:
@@ -60,7 +62,7 @@
         Button:
             size_hint_y: .3
             text: 'Bind Card'
-            on_release: root.bind_card()
+            on_release: root.bind_card_popup()
         Label:
             size_hint_x: .7
         Button:
@@ -70,10 +72,33 @@
 <ProfileImage>:
 
 <ProfileLayout>:
+    orientation: 'vertical'
     BoxLayout:
+        Label:
+            size_hint_x: .3
         ProfileImage:
-
-            source:
+            source: 'res/Images/male_profile.png'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                Label:
+                    bold: True
+                    text: 'Status: '
+                Label:
+                    bold: True
+                    size_hint_x: .05
+                    text: root.regular_status
+            BoxLayout:
+                Label:
+                    bold: True
+                    text: 'Join Date:'
+                Label:
+                    bold: True
+                    size_hint_x: .05
+                    text: root.join_date
+        Label:
+    Label:
+        text: 'footer'
 
 <ProfileScreenLayout>:
     orientation: 'vertical'
@@ -82,8 +107,7 @@
 
     ToolBarHeader:
         screen_manager: root.screen_manager
-    ProfileImage:
-        source: 'res/Images/male_profile.png'
+    ProfileLayout:
     BoxLayout:
         orientation: 'horizontal'
         size_hint: 1, None

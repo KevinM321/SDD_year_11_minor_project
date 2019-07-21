@@ -2,7 +2,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.uix.button import Button
-
+from kivy.properties import StringProperty
 
 class ProfileScreenLayout(BoxLayout):
 
@@ -26,10 +26,18 @@ class CardInfoPopup(BoxLayout):
         super(CardInfoPopup, self).__init__(**kwargs)
 
     @staticmethod
-    def bind_card():
+    def bind_card_popup():
+        confirm_button = InterfaceButton(text='[b]Confirm[/b]')
+        dismiss_button = InterfaceButton(text='[b]Cancel[/b]')
+        popup_content = CardPopup()
+        popup_content.bind_card_popup_footer.add_widget(confirm_button)
+        popup_content.bind_card_popup_footer.add_widget(dismiss_button)
         popup = Popup(title='',
-                      content=CardPopup(),
-                      size_hint=(.625, .625))
+                      content=popup_content,
+                      size_hint=(.625, .625),
+                      auto_dismiss=False)
+        confirm_button.bind(on_release=popup.dismiss)
+        dismiss_button.bind(on_release=popup.dismiss)
         popup.open()
 
 
@@ -38,7 +46,11 @@ class CardPopup(BoxLayout):
 
 
 class ProfileLayout(BoxLayout):
-    pass
+
+    def __init__(self, **kwargs):
+        super(ProfileLayout, self).__init__(**kwargs)
+        self.regular_status = 'Regular customer'
+        self.join_date = '20/7/2019'
 
 
 class ProfileImage(Image):
@@ -55,3 +67,7 @@ class ProfileImage(Image):
                           content=pic_choice,
                           size_hint=(.45, .25))
             popup.open()
+
+
+class InterfaceButton(Button):
+    pass
