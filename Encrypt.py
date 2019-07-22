@@ -41,9 +41,12 @@ class Customer:
             return 'Username illegal'
         hash_brown = pbkdf2_sha256.hash(self.password)  # hashed password
         account = [self.name, hash_brown, False, 0]
+        profile = [self.name, 'male', '', '', '']
         if os.stat('Accounts.p').st_size == 0:
             with open('Accounts.p', 'ba') as f:
                 pickle.dump(account, f)
+            with open('profile.p', 'ba') as f:
+                pickle.dump(profile, f)
                 return 'Successful registration'
         else:
             loop = True
@@ -61,4 +64,6 @@ class Customer:
             return 'Password illegal'
         with open('Accounts.p', 'ba') as f:
             pickle.dump(account, f)
+        with open('profile.p', 'ba') as f:
+            pickle.dump(profile, f)
             return 'Successful registration'

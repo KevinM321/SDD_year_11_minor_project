@@ -115,3 +115,7 @@ class ItemLayout(GridLayout):
                                        price=price,
                                        description=desc,
                                        img_path=img_path))
+
+
+class ToolBarFooter(BoxLayout):
+    pass

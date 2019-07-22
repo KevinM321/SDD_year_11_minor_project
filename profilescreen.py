@@ -2,7 +2,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.uix.button import Button
-from kivy.properties import StringProperty
+from kivy.uix.label import Label
+
 
 class ProfileScreenLayout(BoxLayout):
 
@@ -32,6 +33,7 @@ class CardInfoPopup(BoxLayout):
         popup_content = CardPopup()
         popup_content.bind_card_popup_footer.add_widget(confirm_button)
         popup_content.bind_card_popup_footer.add_widget(dismiss_button)
+        popup_content.bind_card_popup_footer.add_widget(Label(size_hint_x=.2))
         popup = Popup(title='',
                       content=popup_content,
                       size_hint=(.625, .625),
@@ -61,12 +63,22 @@ class ProfileImage(Image):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             pic_choice = BoxLayout(spacing=100)
-            pic_choice.add_widget(Button(text='Male', size_hint=(.7, .3)))
-            pic_choice.add_widget(Button(text='Female', size_hint=(.7, .3)))
+            male_button = Button(text='Male')
+            female_button = Button(text='Female')
+            pic_choice.add_widget(male_button)
+            pic_choice.add_widget(female_button)
             popup = Popup(title='Change Profile Pic',
                           content=pic_choice,
                           size_hint=(.45, .25))
+            male_button.bind(on_release=self.male_profile)
+            female_button.bind(on_release=self.female_profile)
             popup.open()
+
+    def male_profile(self, args):
+        self.source = 'res/Images/male_profile.png'
+
+    def female_profile(self, args):
+        self.source = 'res/Images/female_profile.png'
 
 
 class InterfaceButton(Button):

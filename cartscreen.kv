@@ -37,17 +37,7 @@
             size_hint_y: None
             height: self.minimum_height
 
-    BoxLayout:
-        orientation: 'horizontal'
-        markup: True
-        size_hint: 1, None
-        height: top_height
-        canvas:
-            Color:
-                rgba: 0.25, 0.25, 0.25, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    ToolBarFooter:
         Label:
             pos: 0, 1
             size_hint: .8, 1

@@ -50,6 +50,9 @@
             size: 80, 45
     BoxLayout:
         id: _bind_card_popup_footer
+        spacing: 75
+        Label:
+            size_hint_x: .2
 
 #Popup layout for card info
 <CardInfoPopup>:
@@ -70,14 +73,15 @@
             text: 'Change Card'
 
 <ProfileImage>:
-
+    source: 'res/Images/male_profile.png'
 <ProfileLayout>:
     orientation: 'vertical'
+    Label:
+        size_hint_y: .15
     BoxLayout:
         Label:
             size_hint_x: .3
         ProfileImage:
-            source: 'res/Images/male_profile.png'
         BoxLayout:
             orientation: 'vertical'
             BoxLayout:
@@ -98,6 +102,7 @@
                     text: root.join_date
         Label:
     Label:
+        size_hint_y: .3
         text: 'footer'
 
 <ProfileScreenLayout>:
@@ -108,22 +113,12 @@
     ToolBarHeader:
         screen_manager: root.screen_manager
     ProfileLayout:
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: 1, None
-        height: top_height
-        canvas:
-            Color:
-                rgba: 0.25, 0.25, 0.25, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
+    ToolBarFooter:
         Label:
             pos: 0, 1
             size_hint: .8, 1
         InterfaceButton:
-            on_release:
+            size: 150, 45
             text: '[b]Change Password[/b]'
         InterfaceButton:
             on_release: root.card_info()
