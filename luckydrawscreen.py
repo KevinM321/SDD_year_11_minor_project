@@ -11,15 +11,13 @@ from kivy.uix.image import Image
 
 class LuckyDrawScreenLayout(BoxLayout):
     t = 0
+    chance = True
 
     def __init__(self, **kwargs):
         super(LuckyDrawScreenLayout, self).__init__(**kwargs)
         self.event = 0
 
     def change_display(self):
-        self.lucky_draw_layout.clear_widgets()
-        self.lucky_draw_layout.add_widget(LuckyDrawImage(
-                                                         source='res/Images/question_mark.png'))
         item = item_data[randint(0, 9)]
         self.lucky_draw_display.source = item[3]
         if self.t < 2:
@@ -39,12 +37,21 @@ class LuckyDrawScreenLayout(BoxLayout):
             p.open()
 
     def lucky_draw(self):
-        self.event = Clock.schedule_interval(lambda dt: self.change_display(), 0.2)
+        if LuckyDrawScreenLayout.chance:
+            self.event = Clock.schedule_interval(lambda dt: self.change_display(), 0.2)
+            LuckyDrawScreenLayout.chance = False
+        else:
+            popup = Popup(title='',
+                          content=Label(text='Come back next week for more!'),
+                          size_hint=(.5, .5))
+            popup.open()
 
 
 class LuckyDrawImage(Image):
 
     def __init__(self, **kwargs):
-        # _lucky_draw_display = '_lucky_draw_display'
         super(LuckyDrawImage, self).__init__(**kwargs)
-        # self.id = _lucky_draw_display
+
+
+class LuckyDrawBox(BoxLayout):
+    pass

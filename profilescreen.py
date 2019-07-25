@@ -1,8 +1,14 @@
+import customer_functions
+import loginscreen
+import re
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+
+pattern = r'^[0-9]*$'
 
 
 class ProfileScreenLayout(BoxLayout):
@@ -39,12 +45,43 @@ class CardInfoPopup(BoxLayout):
                       size_hint=(.625, .625),
                       auto_dismiss=False)
         confirm_button.bind(on_release=popup.dismiss)
+        confirm_button.bind(on_release=popup_content.bind_card)
         dismiss_button.bind(on_release=popup.dismiss)
         popup.open()
 
 
 class CardPopup(BoxLayout):
-    pass
+
+    def __init__(self, **kwargs):
+        super(CardPopup, self).__init__(**kwargs)
+
+    def bind_card(self, args):
+        card_info = [self.card_number.text,
+                     self.card_pin.text,
+                     (self.card_date.text + '/' + self.card_month.text + '/' + self.card_year.text)]
+        if len(self.card_number.text) != 16 or not re.match(pattern, self.card_number.text):
+            popup = Popup(title='',
+                          content=Label(text='Invalid card number, must be 16 digits'),
+                          size_hint=(.5, .5))
+            popup.open()
+        elif ((len(self.card_pin.text) < 3 or len(self.card_pin.text) > 4) or not
+              re.match(pattern, self.card_pin.text)):
+            popup = Popup(title='',
+                          content=Label(text='Invalid card pin, must be 3 or 4 digits'),
+                          size_hint=(.5, .5))
+            popup.open()
+        elif (len(self.card_date.text) != 2 or
+              len(self.card_month.text) != 2 or
+              len(self.card_year.text) != 2 or not
+              re.match(pattern, self.card_date.text) or not
+              re.match(pattern, self.card_month.text) or not
+              re.match(pattern, self.card_year.text)):
+            popup = Popup(title='',
+                          content=Label(text='Invalid expiration date, all must be 2 digits'),
+                          size_hint=(.5, .5))
+            popup.open()
+        else:
+            loginscreen.LoginScreenLayout.customer.adding_card(card_info)
 
 
 class ProfileLayout(BoxLayout):

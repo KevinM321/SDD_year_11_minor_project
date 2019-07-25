@@ -16,21 +16,27 @@
     size: 250, 50
     cursor_color: 0, 0, 0, 1
 
+
 #Popup layout for binding or changing card bind
 <CardPopup>:
     bind_card_popup_footer: _bind_card_popup_footer
+    card_number: _card_number
+    card_pin: _card_pin
+    card_date: _card_date
+    card_month: _card_month
+    card_year: _card_year
     orientation: 'vertical'
     Label:
         markup: True
         text: '[b]Card Info[b]'
         font_size: 45
     InputBox:
+        id: _card_number
         l_text: "Card Number"
-        input_text: ''
         center_x: root.center_x
     InputBox:
-        l_text: 'Card Pin'
-        input_text: ''
+        id: _card_pin
+        l_text: 'Card Pin / Csv'
         center_x: root.center_x
     BoxLayout:
         size_hint_x: None
@@ -43,10 +49,13 @@
             size_hint: None, None
             size: 150, 50
         SmallInputBox:
+            id: _card_date
             size: 80, 45
         SmallInputBox:
+            id: _card_month
             size: 80, 45
         SmallInputBox:
+            id: _card_year
             size: 80, 45
     BoxLayout:
         id: _bind_card_popup_footer

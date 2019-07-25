@@ -2,6 +2,7 @@ from passlib.hash import pbkdf2_sha256
 import pickle
 import os
 import re
+from datetime import date
 
 # method one
 # ALLOWED_CHAR = ascii_letters + "1234567890"
@@ -12,6 +13,7 @@ pattern = r"[A-Za-z0-9]+$"
 
 
 class Customer:
+
     def __init__(self, name, password):
         self.name = name
         self.password = password
@@ -28,8 +30,7 @@ class Customer:
                     content = pickle.load(f)
                     if self.name in content:
                         if pbkdf2_sha256.verify(self.password, content[1]):
-                            regular_status = content[2]
-                            return regular_status
+                            return
                         return 'Incorrect password'
                 except EOFError:
                     return 'Username not registered'
@@ -40,14 +41,11 @@ class Customer:
         elif not re.match(pattern, self.name):
             return 'Username illegal'
         hash_brown = pbkdf2_sha256.hash(self.password)  # hashed password
-        account = [self.name, hash_brown, False, 0]
-        profile = [self.name, 'male', '', '', '']
+        account = [self.name, hash_brown, 'male', 'card number', 'card pin',
+                   'card expiration date', True, 'date', False, 0]  # account details
         if os.stat('Accounts.p').st_size == 0:
             with open('Accounts.p', 'ba') as f:
                 pickle.dump(account, f)
-            with open('profile.p', 'ba') as f:
-                pickle.dump(profile, f)
-                return 'Successful registration'
         else:
             loop = True
             with open('Accounts.p', 'br') as f:
@@ -64,6 +62,16 @@ class Customer:
             return 'Password illegal'
         with open('Accounts.p', 'ba') as f:
             pickle.dump(account, f)
-        with open('profile.p', 'ba') as f:
-            pickle.dump(profile, f)
             return 'Successful registration'
+
+    def adding_card(self, card_info):
+        with open('profile.p', 'ba') as f:
+            while True:
+                content = pickle.load(f)
+                if self.name in content:
+                    profile = content
+                    index = 2
+                    for item in card_info:
+                        profile[index] = item
+                        index += 1
+                    break

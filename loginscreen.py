@@ -1,5 +1,5 @@
-import Encrypt
 import Discount
+import customer_functions
 
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
@@ -9,10 +9,14 @@ from kivy.uix.screenmanager import CardTransition
 
 
 class LoginScreenLayout(BoxLayout):
+    customer = ''
+
+    def __init__(self, **kwargs):
+        super(LoginScreenLayout, self).__init__(**kwargs)
 
     def login(self):
-        customer = Encrypt.Customer(self.usr_name_input.text, self.psw_input.text)
-        msg = customer.check()
+        LoginScreenLayout.customer = customer_functions.Customer(self.usr_name_input.text, self.psw_input.text)
+        msg = LoginScreenLayout.customer.check()
         if msg:
             popup = Popup(title='', content=Label(text=msg), size_hint=(.5, .5))
             popup.open()
@@ -22,7 +26,7 @@ class LoginScreenLayout(BoxLayout):
             self.screen_manager.current = 'shop_screen'
 
     def register(self):
-        customer = Encrypt.Customer(self.usr_name_input.text, self.psw_input.text)
+        customer = customer_functions.Customer(self.usr_name_input.text, self.psw_input.text)
         popup = Popup(title='', content=Label(text=customer.register()), size_hint=(.5, .5))
         popup.open()
 
