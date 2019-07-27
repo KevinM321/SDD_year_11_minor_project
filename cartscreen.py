@@ -4,7 +4,9 @@ from kivy.uix.label import Label
 
 
 class CartScreenLayout(BoxLayout):
-    pass
+
+    def display_info(self):
+        pass
 
 
 class CartItem(BoxLayout):
@@ -18,6 +20,7 @@ class CartItem(BoxLayout):
         super(CartItem, self).__init__(**kwargs)
         self.name = kwargs.pop('name')
         self.quantity = kwargs.pop('quantity')
+        self.price = kwargs.pop('price')
 
 
 class CartLayout(BoxLayout):
@@ -27,7 +30,7 @@ class CartLayout(BoxLayout):
         CartLayout.cart = self
 
     @staticmethod
-    def display(item_quantity):
+    def display(item_quantity, item_data):
         CartLayout.cart.clear_widgets()
         counter = 0
         for item in item_quantity:
@@ -38,11 +41,14 @@ class CartLayout(BoxLayout):
         else:
             for item in item_quantity:
                 name, quantity = item, item_quantity[item]
+                for i in item_data:
+                    if name in i:
+                        price = quantity * i[1]
+                        break
                 if quantity != 0:
                     CartLayout.cart.add_widget(CartItem(name=name,
                                                         quantity=quantity,
-                                                        size_hint_y=None,
-                                                        height=50))
+                                                        price=price))
 
 
 

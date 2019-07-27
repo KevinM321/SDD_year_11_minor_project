@@ -6,11 +6,17 @@
         screen_manager: root.screen_manager
 
 <CartItem>:
+    size_hint_y: None
+    height: 35
     spacing: 60
     Label:
         text: root.name
     Label:
+        size_hint_x: .2
         text: str(root.quantity)
+    Label:
+        size_hint_x: .3
+        text: '$' + str(root.price)
 
 <CartLayout>:
     orientation: 'vertical'
@@ -22,20 +28,37 @@
 
     ToolBarHeader:
         screen_manager: root.screen_manager
+    BoxLayout:
+        size_hint_y: None
+        height: 35
+        spacing: 60
+        Label:
+            text: 'Name'
+        Label:
+            size_hint_x: .2
+            text: 'Quantity'
+        Label:
+            size_hint_x: .3
+            text: 'Price'
     AnchorLayout:
         anchor_y: 'top'
-        size_hint_y: None
+        size_hint_y:
         height: root.height - (2 * top_height)
-        canvas:
-
-
-
-#            Line:
-#                rectangle: 0, 0, self.width, self.height
-
         CartLayout:
             size_hint_y: None
             height: self.minimum_height
+    BoxLayout:
+        size_hint_y: None
+        height: 35
+        spacing: 60
+        Label:
+        Label:
+            size_hint_x: .2
+            text: 'Item count: '
+        Label:
+            size_hint_x: .3
+            text: 'Sum: '
+
 
     ToolBarFooter:
         Label:

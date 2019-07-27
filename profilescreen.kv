@@ -1,5 +1,3 @@
-#:import CardTransition kivy.uix.screenmanager.CardTransition
-
 <ProfileScreen@Screen>:
     name: 'profile_screen'
     screen_manager: self.screen_manager
@@ -8,7 +6,7 @@
         screen_manager: root.screen_manager
 
 #Small input box designed as date boxes in CardPopup
-<SmallInputBox@TextInput>
+<SmallInputBox@TextInput>:
     multiline: False
     write_tab: False
     padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]
@@ -16,6 +14,24 @@
     size: 250, 50
     cursor_color: 0, 0, 0, 1
 
+<PasswordPopup>:
+    change_password_footer: _change_password_footer
+    old_password: _old_password
+    new_password: _new_password
+    orientation: 'vertical'
+    InputBox:
+        id: _old_password
+        l_text: "Old Password"
+        center_x: root.center_x
+    InputBox:
+        id: _new_password
+        l_text: 'New Password'
+        center_x: root.center_x
+    BoxLayout:
+        id: _change_password_footer
+        spacing: 75
+        Label:
+            size_hint_x: .2
 
 #Popup layout for binding or changing card bind
 <CardPopup>:
@@ -66,73 +82,105 @@
 #Popup layout for card info
 <CardInfoPopup>:
     card_image: _card_image
+    bound_card_number: _bound_card_number
     orientation: 'vertical'
     Image:
         id: _card_image
         source: 'res/Images/credit_card.png'
     BoxLayout:
+        size_hint_y: .05
+        Label:
+            text: 'Bound Card:'
+        Label:
+            id: _bound_card_number
+        Label:
+            size_hint_x: .15
+
+    BoxLayout:
+        Label:
+            size_hint_x: .3
         Button:
             size_hint_y: .3
             text: 'Bind Card'
             on_release: root.bind_card_popup()
         Label:
-            size_hint_x: .7
+            size_hint_x: .8
         Button:
             size_hint_y: .3
-            text: 'Change Card'
+            text: 'Unbind Card'
+            on_release: root.unbind_card()
+        Label:
+            size_hint_x: .3
 
 <ProfileImage>:
     source: 'res/Images/male_profile.png'
+
 <ProfileLayout>:
     orientation: 'vertical'
-    Label:
-        size_hint_y: .15
-    BoxLayout:
-        Label:
-            size_hint_x: .3
-        ProfileImage:
-        BoxLayout:
-            orientation: 'vertical'
-            BoxLayout:
-                Label:
-                    bold: True
-                    text: 'Status: '
-                Label:
-                    bold: True
-                    size_hint_x: .05
-                    text: root.regular_status
-            BoxLayout:
-                Label:
-                    bold: True
-                    text: 'Join Date:'
-                Label:
-                    bold: True
-                    size_hint_x: .05
-                    text: root.join_date
-        Label:
-    Label:
-        size_hint_y: .3
-        text: 'footer'
 
 <ProfileScreenLayout>:
     orientation: 'vertical'
     id: screen_manager
+    profile_layout: _profile_layout.__self__
     screen_manager: root.screen_manager
 
     ToolBarHeader:
         screen_manager: root.screen_manager
     ProfileLayout:
+        username: _username.__self__
+        regular_status: _regular_status.__self__
+        join_date: _join_date.__self__
+        id: _profile_layout
+        Label:
+            size_hint_y: .15
+        BoxLayout:
+            Label:
+                size_hint_x: .25
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    size_hint_y: .3
+                    Label:
+                        bold: True
+                        text: 'Username:'
+                    Label:
+                        id: _username
+                        bold: True
+                ProfileImage:
+                Label:
+                    size_hint_y: .15
+            BoxLayout:
+                orientation: 'vertical'
+                BoxLayout:
+                    Label:
+                        bold: True
+                        text: 'Join Date:'
+                    Label:
+                        id: _join_date
+                        bold: True
+                        size_hint_x: .05
+                BoxLayout:
+                    Label:
+                        bold: True
+                        text: 'Status: '
+                    Label:
+                        id: _regular_status
+                        bold: True
+                        size_hint_x: .05
+            Label:
+        Label:
+            size_hint_y: .3
     ToolBarFooter:
         Label:
             pos: 0, 1
             size_hint: .8, 1
         InterfaceButton:
             size: 150, 45
+            on_release: root.change_password()
             text: '[b]Change Password[/b]'
         InterfaceButton:
-            on_release: root.card_info()
+            on_release: root.card_info('')
             text: '[b]Card Info[/b]'
         InterfaceButton:
-            on_release: root.screen_manager.current = 'login_screen'
-            on_release: root.screen_manager.transition = CardTransition(direction='down', mode='push')
+            on_release: root.logout()
             text: '[b]Logout[/b]'

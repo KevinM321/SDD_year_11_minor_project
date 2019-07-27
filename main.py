@@ -17,8 +17,8 @@ Window.clearcolor = .25, .25, .25, 1
 Builder.load_file('loginscreen.kv')
 Builder.load_file('shopscreen.kv')
 Builder.load_file('cartscreen.kv')
-Builder.load_file('profilescreen.kv')
 Builder.load_file('luckydrawscreen.kv')
+Builder.load_file('profilescreen.kv')
 
 
 class EMScreenManager(ScreenManager):
@@ -26,7 +26,9 @@ class EMScreenManager(ScreenManager):
     def on_current(self, instance, value):
         super(EMScreenManager, self).on_current(self, value)
         if value == 'cart_screen':
-            CartLayout.display(item_quantity)
+            CartLayout.display(item_quantity, item_data)
+        if value == 'profile_screen':
+            ProfileLayout.body.on_profile('args')
 
 
 class EnergyMaxApp(App):

@@ -30,6 +30,7 @@ class Customer:
                     content = pickle.load(f)
                     if self.name in content:
                         if pbkdf2_sha256.verify(self.password, content[1]):
+                            Customer.details = content
                             return
                         return 'Incorrect password'
                 except EOFError:
@@ -41,11 +42,12 @@ class Customer:
         elif not re.match(pattern, self.name):
             return 'Username illegal'
         hash_brown = pbkdf2_sha256.hash(self.password)  # hashed password
-        account = [self.name, hash_brown, 'male', 'card number', 'card pin',
-                   'card expiration date', True, 'date', False, 0]  # account details
+        account = [self.name, hash_brown, True, 'card number', 'card pin',
+                   'card expiration date', True, date.today(), False, 0]  # account details
         if os.stat('Accounts.p').st_size == 0:
             with open('Accounts.p', 'ba') as f:
                 pickle.dump(account, f)
+            return 'Successful registration'
         else:
             loop = True
             with open('Accounts.p', 'br') as f:
@@ -64,14 +66,35 @@ class Customer:
             pickle.dump(account, f)
             return 'Successful registration'
 
-    def adding_card(self, card_info):
-        with open('profile.p', 'ba') as f:
+    @staticmethod
+    def update_account(password, gender, card_info, lucky_draw_chance):
+        if password:
+            Customer.details[1] = pbkdf2_sha256.hash(password)
+        if gender != '':
+            Customer.details[2] = gender
+        if lucky_draw_chance:
+            Customer.details[6] = lucky_draw_chance
+        if card_info:
+            index = 2
+            for item in card_info:
+                index += 1
+                Customer.details[index] = item
+        accounts = list(Customer.unpickle_accounts('Accounts.p'))
+        index = 0
+        for i in accounts:
+            if Customer.details[0] in i:
+                break
+            index += 1
+        accounts[index] = Customer.details
+        with open('Accounts.p', 'wb') as f:
+            for i in accounts:
+                pickle.dump(i, f)
+
+    @staticmethod
+    def unpickle_accounts(file_name):
+        with open(file_name, 'rb') as f:
             while True:
-                content = pickle.load(f)
-                if self.name in content:
-                    profile = content
-                    index = 2
-                    for item in card_info:
-                        profile[index] = item
-                        index += 1
-                    break
+                try:
+                    yield pickle.load(f)
+                except EOFError:
+                    return

@@ -1,7 +1,7 @@
 from kivy.clock import Clock
 from random import randint
 
-from shopscreen import item_data
+from shopscreen import item_data, item_quantity
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
@@ -25,6 +25,8 @@ class LuckyDrawScreenLayout(BoxLayout):
         else:
             Clock.unschedule(self.event)
             self.lucky_draw_layout.clear_widgets()
+            for item in item_quantity:
+                pass
             self.lucky_draw_layout.add_widget(Label(text='Lucky draw used\n\nCome back next week for more',
                                                     halign='center'))
             popup = BoxLayout(orientation='vertical')
