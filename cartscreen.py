@@ -1,12 +1,32 @@
+from shopscreen import item_quantity, item_data
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, NumericProperty
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
 
 
 class CartScreenLayout(BoxLayout):
 
-    def display_info(self):
-        pass
+    @staticmethod
+    def clear_cart():
+        item_quantity.clear()
+        CartLayout.display(item_quantity, item_data)
+
+    @staticmethod
+    def help():
+        content = ScrollView(size_hint=(.6, None))
+        body = BoxLayout(orientation='vertical')
+        body.bind(minimum_height=body.setter('height'))
+        body.add_widget(Label(text='Hi'))
+        body.add_widget(Label(text='Hi'))
+        body.add_widget(Label(text='Hi'))
+        body.add_widget(Label(text='Hi'))
+        body.add_widget(Label(text='Hi'))
+        content.add_widget(body)
+        popup = Popup(title='Cart Screen Help', content=content, size_hint=(.625, .625))
+        popup.open()
 
 
 class CartItem(BoxLayout):
@@ -30,20 +50,22 @@ class CartLayout(BoxLayout):
         CartLayout.cart = self
 
     @staticmethod
-    def display(item_quantity, item_data):
+    def display(item_quantities, items):
         CartLayout.cart.clear_widgets()
         counter = 0
-        for item in item_quantity:
-            if item_quantity[item] != 0:
+        for item in item_quantities:
+            if item_quantities[item] != 0:
                 counter += 1
         if counter == 0:
             CartLayout.cart.add_widget(Label(text='Your cart is empty'))
         else:
-            for item in item_quantity:
-                name, quantity = item, item_quantity[item]
-                for i in item_data:
+            for item in item_quantities:
+                name, quantity, drawn = item, item_quantities[item][0], item_quantities[item][0]
+                for i in items:
                     if name in i:
                         price = quantity * i[1]
+                        if drawn:
+                            price -= i[1]
                         break
                 if quantity != 0:
                     CartLayout.cart.add_widget(CartItem(name=name,

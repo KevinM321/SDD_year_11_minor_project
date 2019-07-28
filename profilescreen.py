@@ -3,6 +3,7 @@ import loginscreen
 import re
 import shopscreen
 from passlib.hash import pbkdf2_sha256
+from datetime import datetime
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
@@ -128,8 +129,14 @@ class CardPopup(BoxLayout):
             card_info = [self.card_number.text,
                          self.card_pin.text,
                          (self.card_date.text + '/' + self.card_month.text + '/' + self.card_year.text)]
-            CardInfoPopup.body.successful_bind()
-            loginscreen.LoginScreenLayout.customer.update_account('', '', card_info, '')
+            if (datetime.strptime(card_info[2], "%d/%m/%y")).date() < (datetime.now()).date():
+                popup = Popup(title='',
+                              content=Label(text='Card already expired'),
+                              size_hint=(.5, .5))
+                popup.open()
+            else:
+                CardInfoPopup.body.successful_bind()
+                loginscreen.LoginScreenLayout.customer.update_account('', '', card_info, '')
 
 
 class ProfileLayout(BoxLayout):

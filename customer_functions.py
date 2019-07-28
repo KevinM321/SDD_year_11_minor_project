@@ -72,7 +72,7 @@ class Customer:
             Customer.details[1] = pbkdf2_sha256.hash(password)
         if gender != '':
             Customer.details[2] = gender
-        if lucky_draw_chance:
+        if not lucky_draw_chance:
             Customer.details[6] = lucky_draw_chance
         if card_info:
             index = 2

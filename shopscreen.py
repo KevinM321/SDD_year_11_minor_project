@@ -8,7 +8,7 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 
 item_data = (['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar.png'],
-             ['Non-Fat Yogurt', 7.00, 'Good for you!', 'res/Images/non_fat_yogurt.png'],
+             ['Non-Fat Yogurt', 6.00, 'Good for you!', 'res/Images/non_fat_yogurt.png'],
              ['Protein Shake', 14.00, 'Gain muscle!', 'res/Images/energy_max_protein_shake.png'],
              ['Weight Loss Shake', 14.00, 'Lose weight!', 'res/Images/energy_max_weightloss_shake.png'],
              ['Gatorade Sports Drink', 4.50, 'Hydration!', 'res/Images/gatorade_drink.png'],

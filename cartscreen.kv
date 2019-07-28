@@ -25,12 +25,18 @@
     orientation: 'vertical'
     id: screen_manager
     screen_manager: root.screen_manager
+    canvas.before:
+        Color:
+            rgba: .25, 1, 0, .3
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     ToolBarHeader:
         screen_manager: root.screen_manager
     BoxLayout:
         size_hint_y: None
-        height: 35
+        height: 65
         spacing: 60
         Label:
             text: 'Name'
@@ -61,12 +67,18 @@
 
 
     ToolBarFooter:
+        InterfaceButton:
+            on_release: root.help()
+            text: '[b]Help[/b]'
         Label:
             pos: 0, 1
             size_hint: .8, 1
         InterfaceButton:
             on_release: root.screen_manager.current = "shop_screen"
             text: '[b]Shop For More[/b]'
+        InterfaceButton:
+            on_release: root.clear_cart()
+            text: '[b]Clear Cart[/b]'
         InterfaceButton:
             on_release:
             text: '[b]Pay[/b]'

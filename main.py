@@ -29,6 +29,8 @@ class EMScreenManager(ScreenManager):
             CartLayout.display(item_quantity, item_data)
         if value == 'profile_screen':
             ProfileLayout.body.on_profile('args')
+        if value == 'lucky_draw_screen':
+            LuckyDrawScreenLayout.body.on_screen()
 
 
 class EnergyMaxApp(App):
