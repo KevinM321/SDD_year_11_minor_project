@@ -85,7 +85,9 @@
         img_path: root.img_path
         source: root.img_path
         markup: True
-        text: '[b]$' + str(root.price) + '[/b]'
+    Label:
+        bold: True
+        text: '$' + str(root.price)
     Label:
         text: root.description
     BoxLayout:

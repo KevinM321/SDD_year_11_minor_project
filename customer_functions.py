@@ -43,7 +43,7 @@ class Customer:
             return 'Username illegal'
         hash_brown = pbkdf2_sha256.hash(self.password)  # hashed password
         account = [self.name, hash_brown, True, 'card number', 'card pin',
-                   'card expiration date', True, date.today(), False, 0]  # account details
+                   'card expiration date', 'lucky_draw_date', True, date.today(), 0, 0]  # account details
         if os.stat('Accounts.p').st_size == 0:
             with open('Accounts.p', 'ba') as f:
                 pickle.dump(account, f)
@@ -67,13 +67,16 @@ class Customer:
             return 'Successful registration'
 
     @staticmethod
-    def update_account(password, gender, card_info, lucky_draw_chance):
+    def update_account(password, gender, card_info, lucky_draw_date, lucky_draw_chance, regular_status):
         if password:
             Customer.details[1] = pbkdf2_sha256.hash(password)
         if gender != '':
             Customer.details[2] = gender
-        if not lucky_draw_chance:
-            Customer.details[6] = lucky_draw_chance
+        if lucky_draw_chance == False:
+            Customer.details[7] = lucky_draw_chance
+            Customer.details[6] = lucky_draw_date
+        if regular_status:
+            Customer.details[8] += 1
         if card_info:
             index = 2
             for item in card_info:

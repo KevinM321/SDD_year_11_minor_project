@@ -9,6 +9,14 @@ from kivy.uix.scrollview import ScrollView
 
 class CartScreenLayout(BoxLayout):
 
+    def __init__(self, **kwargs):
+        super(CartScreenLayout, self).__init__(**kwargs)
+        CartScreenLayout.body = self
+
+    @staticmethod
+    def pay():
+        Popup().open()
+
     @staticmethod
     def clear_cart():
         item_quantity.clear()
@@ -53,6 +61,8 @@ class CartLayout(BoxLayout):
     def display(item_quantities, items):
         CartLayout.cart.clear_widgets()
         counter = 0
+        sum = 0
+        item_count = 0
         for item in item_quantities:
             if item_quantities[item] != 0:
                 counter += 1
@@ -60,17 +70,22 @@ class CartLayout(BoxLayout):
             CartLayout.cart.add_widget(Label(text='Your cart is empty'))
         else:
             for item in item_quantities:
-                name, quantity, drawn = item, item_quantities[item][0], item_quantities[item][0]
+                name, quantity, drawn = item, item_quantities[item][0], item_quantities[item][1]
                 for i in items:
                     if name in i:
                         price = quantity * i[1]
                         if drawn:
                             price -= i[1]
+                            item_quantities[item][1] = False
+                        sum += price
                         break
+                item_count += quantity
                 if quantity != 0:
                     CartLayout.cart.add_widget(CartItem(name=name,
                                                         quantity=quantity,
                                                         price=price))
+        CartScreenLayout.body.sum.text = '$' + str(sum) + ' '
+        CartScreenLayout.body.item_count.text = ' ' + str(item_count)
 
 
 

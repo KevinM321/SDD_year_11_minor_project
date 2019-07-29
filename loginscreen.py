@@ -7,6 +7,8 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import CardTransition
 
+from datetime import datetime
+
 
 class LoginScreenLayout(BoxLayout):
     customer = ''
@@ -18,17 +20,23 @@ class LoginScreenLayout(BoxLayout):
         LoginScreenLayout.customer = customer_functions.Customer(self.usr_name_input.text, self.psw_input.text)
         msg = LoginScreenLayout.customer.check()
         if msg:
-            popup = Popup(title='', content=Label(text=msg), size_hint=(.5, .5))
-            popup.open()
+            Popup(title='', content=Label(text=msg), size_hint=(.5, .5)).open()
         else:
             self.screen_manager.transition = CardTransition(direction='up', mode='pop')
             Discount.discount(msg, 0)
+            self.usr_name_input.input_text = ''
+            self.psw_input.input_text = ''
             self.screen_manager.current = 'shop_screen'
+            if LoginScreenLayout.customer.details[6] != 'lucky_draw_date':
+                date_now = datetime.now().date()
+                drawn_date = LoginScreenLayout.customer.details[6].date()
+                delta = date_now - drawn_date
+                if delta.days >= 7:
+                    print('hi')
 
     def register(self):
         customer = customer_functions.Customer(self.usr_name_input.text, self.psw_input.text)
-        popup = Popup(title='', content=Label(text=customer.register()), size_hint=(.5, .5))
-        popup.open()
+        Popup(title='', content=Label(text=customer.register()), size_hint=(.5, .5)).open()
 
 
 class MyButton(Button):

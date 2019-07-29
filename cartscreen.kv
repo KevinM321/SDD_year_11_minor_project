@@ -25,19 +25,20 @@
     orientation: 'vertical'
     id: screen_manager
     screen_manager: root.screen_manager
-    canvas.before:
-        Color:
-            rgba: .25, 1, 0, .3
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
+    sum: _sum
+    item_count: _item_count
     ToolBarHeader:
         screen_manager: root.screen_manager
     BoxLayout:
         size_hint_y: None
         height: 65
         spacing: 60
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 0.5
+            Line:
+                points: 0, root.height-92.5, self.width, root.height-92.5
+                width: 2.5
         Label:
             text: 'Name'
         Label:
@@ -57,13 +58,29 @@
         size_hint_y: None
         height: 35
         spacing: 60
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 0.5
+            Line:
+                points: 0, self.height+47.5, self.width, self.height+47.5
+                width: 2.5
+
         Label:
-        Label:
+        BoxLayout:
             size_hint_x: .2
-            text: 'Item count: '
-        Label:
-            size_hint_x: .3
-            text: 'Sum: '
+            Label:
+                text: 'Item count: '
+            Label:
+                size_hint_x:
+                id: _item_count
+        BoxLayout:
+            size_hint_x: .225
+            Label:
+                size_hint_x:
+                text: 'Sum: '
+            Label:
+                size_hint_x:
+                id: _sum
 
 
     ToolBarFooter:
@@ -80,5 +97,5 @@
             on_release: root.clear_cart()
             text: '[b]Clear Cart[/b]'
         InterfaceButton:
-            on_release:
+            on_release: root.pay()
             text: '[b]Pay[/b]'

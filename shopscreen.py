@@ -40,6 +40,7 @@ class ItemButton(RelativeLayout):
     price = NumericProperty()
     description = StringProperty()
     img_path = StringProperty()
+    quantity = BoundedNumericProperty(0, min=0, max=50)
 
     def __init__(self, **kwargs):
         super(ItemButton, self).__init__(**kwargs)
@@ -47,6 +48,7 @@ class ItemButton(RelativeLayout):
         self.price = kwargs.pop('price')
         self.description = kwargs.pop('description')
         self.img_path = kwargs.pop('img_path')
+        self.quantity = item_quantity.get(self.name, [0, False])[0]
 
     def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
@@ -56,7 +58,7 @@ class ItemButton(RelativeLayout):
                                        img_path=self.img_path)
             popup_footer = BoxLayout()
             confirm_button = InterfaceButton(text="[b]Confirm[/b]")
-            dismiss_button = InterfaceButton(text='[b]Cancel[/b]')
+            dismiss_button = InterfaceButton(text='[b]Clear[/b]')
             popup_footer.add_widget(Label())
             popup_footer.add_widget(confirm_button)
             popup_footer.add_widget(Label())
@@ -87,13 +89,17 @@ class PopupLayout(BoxLayout):
 
     def __init__(self, **kwargs):
         super(PopupLayout, self).__init__(**kwargs)
-        self.quantity = item_quantity.get(self.name, 0)
+        if item_quantity.get(self.name, 0) == 0:
+            item_quantity[self.name] = [0, False]
+            self.quantity = item_quantity[self.name][0]
+        else:
+            self.quantity = item_quantity.get(self.name)[0]
 
     def save(self, *args):
-        item_quantity[self.name] = self.quantity
+        item_quantity[self.name][0] = self.quantity
 
     def clear(self, *args):
-        item_quantity[self.name] = 0
+        item_quantity[self.name][0] = 0
 
 
 class ImageButton(Image):

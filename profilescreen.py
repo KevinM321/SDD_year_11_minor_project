@@ -28,17 +28,17 @@ class ProfileScreenLayout(BoxLayout):
         content.change_password_footer.add_widget(Label(size_hint_x=.2))
         popup = Popup(title='Change Password',
                       content=content,
-                      size_hint=(.625, .625))
+                      size_hint=(.625, .625),
+                      auto_dismiss=False)
         confirm_button.bind(on_release=popup.dismiss)
         confirm_button.bind(on_release=content.confirm_password)
         dismiss_button.bind(on_release=popup.dismiss)
         popup.open()
 
     def card_info(self, args):
-        popup = Popup(title='',
-                      content=CardInfoPopup(),
-                      size_hint=(.75, .75))
-        popup.open()
+        Popup(title='',
+              content=CardInfoPopup(),
+              size_hint=(.75, .75)).open()
         self.bound_card_info('')
 
     def logout(self):
@@ -86,7 +86,7 @@ class CardInfoPopup(BoxLayout):
         else:
             popup = Popup(title='', content=Label(text='Unbinding card successful'), size_hint=(.5, .5))
             card_info = ['card number', 'card pin', 'card expiration date']
-            loginscreen.LoginScreenLayout.customer.update_account('', '', card_info, '')
+            loginscreen.LoginScreenLayout.customer.update_account('', '', card_info, '', '', '')
             ProfileScreenLayout.bound_card_info('')
         popup.open()
 
@@ -105,38 +105,34 @@ class CardPopup(BoxLayout):
 
     def bind_card(self, args):
         if len(self.card_number.text) != 16 or not re.match(pattern, self.card_number.text):
-            popup = Popup(title='',
-                          content=Label(text='Invalid card number, must be 16 digits'),
-                          size_hint=(.5, .5))
-            popup.open()
+            Popup(title='',
+                  content=Label(text='Invalid card number, must be 16 digits'),
+                  size_hint=(.5, .5)).open()
         elif ((len(self.card_pin.text) < 3 or len(self.card_pin.text) > 4) or not
               re.match(pattern, self.card_pin.text)):
-            popup = Popup(title='',
-                          content=Label(text='Invalid card pin, must be 3 or 4 digits'),
-                          size_hint=(.5, .5))
-            popup.open()
+            Popup(title='',
+                  content=Label(text='Invalid card pin, must be 3 or 4 digits'),
+                  size_hint=(.5, .5)).open()
         elif (len(self.card_date.text) != 2 or
               len(self.card_month.text) != 2 or
               len(self.card_year.text) != 2 or not
               re.match(pattern, self.card_date.text) or not
               re.match(pattern, self.card_month.text) or not
               re.match(pattern, self.card_year.text)):
-            popup = Popup(title='',
-                          content=Label(text='Invalid expiration date, all must be 2 digits'),
-                          size_hint=(.5, .5))
-            popup.open()
+            Popup(title='',
+                  content=Label(text='Invalid expiration date, all must be 2 digits'),
+                  size_hint=(.5, .5)).open()
         else:
             card_info = [self.card_number.text,
                          self.card_pin.text,
                          (self.card_date.text + '/' + self.card_month.text + '/' + self.card_year.text)]
             if (datetime.strptime(card_info[2], "%d/%m/%y")).date() < (datetime.now()).date():
-                popup = Popup(title='',
-                              content=Label(text='Card already expired'),
-                              size_hint=(.5, .5))
-                popup.open()
+                Popup(title='',
+                      content=Label(text='Card already expired'),
+                      size_hint=(.5, .5)).open()
             else:
                 CardInfoPopup.body.successful_bind()
-                loginscreen.LoginScreenLayout.customer.update_account('', '', card_info, '')
+                loginscreen.LoginScreenLayout.customer.update_account('', '', card_info, '', '', '')
 
 
 class ProfileLayout(BoxLayout):
@@ -147,8 +143,8 @@ class ProfileLayout(BoxLayout):
 
     def on_profile(self, args):
         self.username.text = loginscreen.LoginScreenLayout.customer.name
-        self.join_date.text = str(loginscreen.LoginScreenLayout.customer.details[7])
-        if loginscreen.LoginScreenLayout.customer.details[8]:
+        self.join_date.text = str(loginscreen.LoginScreenLayout.customer.details[8])
+        if loginscreen.LoginScreenLayout.customer.details[9] >= 5:
             self.regular_status.text = 'Regular'
         else:
             self.regular_status.text = 'Irregular'  # this is a joke
@@ -171,12 +167,11 @@ class ProfileImage(Image):
             female_button = Button(text='Female')
             pic_choice.add_widget(male_button)
             pic_choice.add_widget(female_button)
-            popup = ProfileImagePopup(title='Change Profile Pic',
-                                      content=pic_choice,
-                                      size_hint=(.45, .25))
             male_button.bind(on_release=self.male_profile)
             female_button.bind(on_release=self.female_profile)
-            popup.open()
+            ProfileImagePopup(title='Change Profile Pic',
+                              content=pic_choice,
+                              size_hint=(.45, .25)).open()
 
     def male_profile(self, args):
         self.source = 'res/Images/male_profile.png'
@@ -195,7 +190,7 @@ class ProfileImagePopup(Popup):
 
     def on_dismiss(self, **kwargs):
         super(ProfileImagePopup, self).on_dismiss(**kwargs)
-        loginscreen.LoginScreenLayout.customer.update_account('', ProfileImage.gender, '', '')
+        loginscreen.LoginScreenLayout.customer.update_account('', ProfileImage.gender, '', '', '', '')
 
 
 class PasswordPopup(BoxLayout):
@@ -214,7 +209,7 @@ class PasswordPopup(BoxLayout):
                                   size_hint=(.5, .5))
                     popup.open()
                 else:
-                    loginscreen.LoginScreenLayout.customer.update_account(self.new_password.text, '', '', '')
+                    loginscreen.LoginScreenLayout.customer.update_account(self.new_password.text, '', '', '', '', '')
             else:
                 popup = Popup(title='',
                               content=Label(text='Old password incorrect'),
