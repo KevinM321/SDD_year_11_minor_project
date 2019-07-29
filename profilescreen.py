@@ -197,21 +197,18 @@ class PasswordPopup(BoxLayout):
 
     def confirm_password(self, args):
         if self.old_password.text == '':
-            popup = Popup(title='',
-                          content=Label(text='Please input password'),
-                          size_hint=(.5, .5))
-            popup.open()
+            Popup(title='',
+                  content=Label(text='Please input password'),
+                  size_hint=(.5, .5)).open()
         else:
             if pbkdf2_sha256.verify(self.old_password.text, loginscreen.LoginScreenLayout.customer.details[1]):
                 if not re.match(customer_functions.pattern, self.new_password.text):
-                    popup = Popup(title='',
-                                  content=Label(text='New password incorrect syntax'),
-                                  size_hint=(.5, .5))
-                    popup.open()
+                    Popup(title='',
+                          content=Label(text='New password incorrect syntax'),
+                          size_hint=(.5, .5)).open()
                 else:
                     loginscreen.LoginScreenLayout.customer.update_account(self.new_password.text, '', '', '', '', '')
             else:
-                popup = Popup(title='',
-                              content=Label(text='Old password incorrect'),
-                              size_hint=(.5, .5))
-                popup.open()
+                Popup(title='',
+                      content=Label(text='Old password incorrect'),
+                      size_hint=(.5, .5)).open()

@@ -5,6 +5,36 @@
     CartScreenLayout:
         screen_manager: root.screen_manager
 
+<PayLayout>:
+    pay_footer: _pay_footer
+    pay_amount: _pay_amount
+    orientation: 'vertical'
+    BoxLayout:
+    InputBox:
+        id: _pay_amount
+        l_text: 'Pay Amount'
+    BoxLayout:
+        id: _pay_footer
+
+<ReceiptLayout>
+    orientation: 'vertical'
+    receipt_data: _receipt_data
+    date: _date
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: .4
+        Label:
+            bold: True
+            text: 'Energy Max'
+            pos_hint: {'center': .5}
+        Label:
+            id: _date
+    BoxLayout:
+        orientation: 'vertical'
+        id: _receipt_data
+    Label:
+        size_hint_y: .45
+
 <CartItem>:
     size_hint_y: None
     height: 35
@@ -20,6 +50,29 @@
 
 <CartLayout>:
     orientation: 'vertical'
+
+<ReceiptFooter>:
+    item_count: _item_count
+    sum: _sum
+    size_hint_y: None
+    height: 25
+    spacing: 40
+    Label:
+        size_hint_x: .5
+    BoxLayout:
+        size_hint_x: .45
+        Label:
+            text: 'Item count: '
+        Label:
+        Label:
+            size_hint_x: .5
+            id: _item_count
+    BoxLayout:
+        size_hint_x: .5
+        Label:
+            text: 'Sum: '
+        Label:
+            id: _sum
 
 <CartScreenLayout>:
     orientation: 'vertical'
@@ -49,7 +102,6 @@
             text: 'Price'
     AnchorLayout:
         anchor_y: 'top'
-        size_hint_y:
         height: root.height - (2 * top_height)
         CartLayout:
             size_hint_y: None
@@ -71,17 +123,13 @@
             Label:
                 text: 'Item count: '
             Label:
-                size_hint_x:
                 id: _item_count
         BoxLayout:
             size_hint_x: .225
             Label:
-                size_hint_x:
                 text: 'Sum: '
             Label:
-                size_hint_x:
                 id: _sum
-
 
     ToolBarFooter:
         InterfaceButton:
@@ -91,11 +139,11 @@
             pos: 0, 1
             size_hint: .8, 1
         InterfaceButton:
-            on_release: root.screen_manager.current = "shop_screen"
-            text: '[b]Shop For More[/b]'
-        InterfaceButton:
             on_release: root.clear_cart()
             text: '[b]Clear Cart[/b]'
+        InterfaceButton:
+            on_release: root.screen_manager.current = "shop_screen"
+            text: '[b]Shop For More[/b]'
         InterfaceButton:
             on_release: root.pay()
             text: '[b]Pay[/b]'
