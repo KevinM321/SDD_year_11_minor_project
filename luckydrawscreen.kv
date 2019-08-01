@@ -20,6 +20,12 @@
         screen_manager: root.screen_manager
 
     BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 0.75
+            Line:
+                width: 2.2
+                circle: root.width/2, root.height/2, root.height/2.4
         Label:
         BoxLayout:
             orientation: 'vertical'

@@ -13,7 +13,7 @@ item_data = (['Energy Max Bar', 3.50, 'Tastes good!', 'res/Images/energy_max_bar
              ['Weight Loss Shake', 14.00, 'Lose weight!', 'res/Images/energy_max_weightloss_shake.png'],
              ['Gatorade Sports Drink', 4.50, 'Hydration!', 'res/Images/gatorade_drink.png'],
              ['Beef Jerky', 5.50, 'Simply delicious!', 'res/Images/beef_jerky.png'],
-             ['Mixed Berries', 4.50, 'Fruity!', 'res/Images/mixed_berries.png'],
+             ['Mixed Berries', 5.00, 'Fruity!', 'res/Images/mixed_berries.png'],
              ['GFuel Energy', 45.50, 'Fuel yourself!', 'res/Images/gfuel_drink.png'],
              ['Whey Protein Powder', 57.00, 'Do you know the Whey?', 'res/Images/whey_protein.png'],
              ['Energy Max Supplement', 18.50, 'Healthy!', 'res/Images/energy_max_supplement.png'])
@@ -117,10 +117,11 @@ class ItemLayout(GridLayout):
     def __init__(self, **kwargs):
         super(ItemLayout, self).__init__(**kwargs)
         for name, price, desc, img_path in item_data:
-            self.add_widget(ItemButton(name=name,
-                                       price=price,
-                                       description=desc,
-                                       img_path=img_path))
+            button = ItemButton(name=name,
+                                price=price,
+                                description=desc,
+                                img_path=img_path)
+            self.add_widget(button)
 
 
 class ToolBarFooter(BoxLayout):

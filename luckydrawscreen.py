@@ -29,16 +29,24 @@ class LuckyDrawScreenLayout(BoxLayout):
 
     def lucky_draw(self):
         if LoginScreenLayout.customer.details[7]:
-            self.event = Clock.schedule_interval(lambda dt: LuckyDrawImage.body.change_display(), 0.2)
+            self.event = Clock.schedule_interval(lambda dt: LuckyDrawImage.body.change_display(), 0.1)
+            Clock.schedule_once(lambda dt: LuckyDrawScreenLayout.drawn_item(), 2.05)
             LoginScreenLayout.customer.update_account('', '', '', datetime.today(), False, '')
         else:
             Popup(title='',
                   content=Label(text='Come back next week for more!'),
                   size_hint=(.5, .5)).open()
 
+    @staticmethod
+    def drawn_item():
+        if item_quantity.get(LuckyDrawImage.item[0], '') == '':
+            item_quantity[LuckyDrawImage.item[0]] = [0, True]
+        else:
+            item_quantity[LuckyDrawImage.item[0]][1] = True
+
 
 class LuckyDrawImage(Image):
-    t = 0
+    t = 0.4
 
     def __init__(self, **kwargs):
         super(LuckyDrawImage, self).__init__(**kwargs)
@@ -46,21 +54,19 @@ class LuckyDrawImage(Image):
         LuckyDrawImage.body = self
 
     def change_display(self):
-        item = item_data[randint(0, 9)]
-        self.source = item[3]
+        LuckyDrawImage.item = item_data[randint(0, 9)]
+        self.source = LuckyDrawImage.item[3]
         if self.t < 2:
-            self.t += 0.2
+            self.t += 0.1
         else:
             Clock.unschedule(LuckyDrawScreenLayout.body.event)
             LuckyDrawScreenLayout.body.lucky_draw_layout.clear_widgets()
-            for item in item_quantity:
-                pass
             LuckyDrawScreenLayout.body.lucky_draw_layout.add_widget(Label(text='Lucky draw used\n'
                                                                           '\nCome back next week for more',
                                                                           halign='center'))
             content = BoxLayout(orientation='vertical')
-            content.add_widget(Label(text=("You've drawn " + item[0]+' !')))
-            content.add_widget(Image(source=item[3]))
+            content.add_widget(Label(text=("You've drawn " + LuckyDrawImage.item[0]+' !')))
+            content.add_widget(Image(source=LuckyDrawImage.item[3]))
             content.add_widget(Label(text='Come back next week for more!'))
             Popup(title='',
                   content=content,

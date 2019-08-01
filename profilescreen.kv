@@ -147,6 +147,12 @@
                         id: _username
                         bold: True
                 ProfileImage:
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, .75
+                        Line:
+                            width: 1.5
+                            rectangle: self.x, self.y, self.width, self.height
                 Label:
                     size_hint_y: .15
             BoxLayout:

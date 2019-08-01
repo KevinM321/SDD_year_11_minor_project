@@ -104,12 +104,12 @@ class CardInfoPopup(BoxLayout):
 class CardPopup(BoxLayout):
 
     def bind_card(self, args):
-        if len(self.card_number.text) != 16 or not re.match(pattern, self.card_number.text):
+        if len(self.card_number.text_input.text) != 16 or not re.match(pattern, self.card_number.text_input.text):
             Popup(title='',
                   content=Label(text='Invalid card number, must be 16 digits'),
                   size_hint=(.5, .5)).open()
-        elif ((len(self.card_pin.text) < 3 or len(self.card_pin.text) > 4) or not
-              re.match(pattern, self.card_pin.text)):
+        elif ((len(self.card_pin.text_input.text) < 3 or len(self.card_pin.text_input.text) > 4) or not
+              re.match(pattern, self.card_pin.text_input.text)):
             Popup(title='',
                   content=Label(text='Invalid card pin, must be 3 or 4 digits'),
                   size_hint=(.5, .5)).open()
@@ -123,8 +123,8 @@ class CardPopup(BoxLayout):
                   content=Label(text='Invalid expiration date, all must be 2 digits'),
                   size_hint=(.5, .5)).open()
         else:
-            card_info = [self.card_number.text,
-                         self.card_pin.text,
+            card_info = [self.card_number.text_input.text,
+                         self.card_pin.text_input.text,
                          (self.card_date.text + '/' + self.card_month.text + '/' + self.card_year.text)]
             if (datetime.strptime(card_info[2], "%d/%m/%y")).date() < (datetime.now()).date():
                 Popup(title='',
@@ -144,7 +144,7 @@ class ProfileLayout(BoxLayout):
     def on_profile(self, args):
         self.username.text = loginscreen.LoginScreenLayout.customer.name
         self.join_date.text = str(loginscreen.LoginScreenLayout.customer.details[8])
-        if loginscreen.LoginScreenLayout.customer.details[9] >= 5:
+        if loginscreen.LoginScreenLayout.customer.details[9] >= 3:
             self.regular_status.text = 'Regular'
         else:
             self.regular_status.text = 'Irregular'  # this is a joke
@@ -196,18 +196,18 @@ class ProfileImagePopup(Popup):
 class PasswordPopup(BoxLayout):
 
     def confirm_password(self, args):
-        if self.old_password.text == '':
+        if self.old_password.text_input.text == '':
             Popup(title='',
                   content=Label(text='Please input password'),
                   size_hint=(.5, .5)).open()
         else:
-            if pbkdf2_sha256.verify(self.old_password.text, loginscreen.LoginScreenLayout.customer.details[1]):
-                if not re.match(customer_functions.pattern, self.new_password.text):
+            if pbkdf2_sha256.verify(self.old_password.text_input.text, loginscreen.LoginScreenLayout.customer.details[1]):
+                if not re.match(customer_functions.pattern, self.new_password.text_input.text):
                     Popup(title='',
                           content=Label(text='New password incorrect syntax'),
                           size_hint=(.5, .5)).open()
                 else:
-                    loginscreen.LoginScreenLayout.customer.update_account(self.new_password.text, '', '', '', '', '')
+                    loginscreen.LoginScreenLayout.customer.update_account(self.new_password.text_input.text, '', '', '', '', '')
             else:
                 Popup(title='',
                       content=Label(text='Old password incorrect'),

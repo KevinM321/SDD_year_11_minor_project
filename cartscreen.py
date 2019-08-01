@@ -1,5 +1,8 @@
 from shopscreen import item_quantity, item_data
-from datetime import date
+from datetime import date, datetime
+
+from loginscreen import LoginScreenLayout
+from Discount import discount_method
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, NumericProperty
@@ -8,6 +11,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 # from kivy.lang import Builder
+
+pattern = r'^[0-9]*$'
 
 
 class CartScreenLayout(BoxLayout):
@@ -22,23 +27,26 @@ class CartScreenLayout(BoxLayout):
             popup = Popup(title='',
                           content=Label(text='Your cart is empty, please add items first'),
                           size_hint=(.625, .625))
+            popup.open()
         else:
             content = PayLayout()
-            cash_button = Button(bold=True, text='Cash', size_hint_y=.375, size_hint_x=.6)
-            card_button = Button(bold=True, text='Card', size_hint_y=.375, size_hint_x=.6)
-            content.pay_footer.add_widget(Label(size_hint_x=.2, size_hint_y=.375))
+            cash_button = Button(bold=True, text='Cash', size_hint_y=.45, size_hint_x=.6)
+            card_button = Button(bold=True, text='Card', size_hint_y=.45, size_hint_x=.6)
+            content.pay_footer.add_widget(Label(size_hint_x=.2, size_hint_y=.45))
             content.pay_footer.add_widget(cash_button)
-            content.pay_footer.add_widget(Label(size_hint_x=.4, size_hint_y=.375))
+            content.pay_footer.add_widget(Label(size_hint_x=.4, size_hint_y=.45))
             content.pay_footer.add_widget(card_button)
-            content.pay_footer.add_widget(Label(size_hint_x=.2, size_hint_y=.375))
+            content.pay_footer.add_widget(Label(size_hint_x=.2, size_hint_y=.45))
             popup = Popup(title='',
                           content=content,
                           size_hint=(.7, .7))
             cash_button.bind(on_release=popup.dismiss)
             card_button.bind(on_release=popup.dismiss)
-            cash_button.bind(on_release=lambda x: CartScreenLayout.cash_popup(content.pay_amount.text))
-            card_button.bind(on_release=lambda x: CartScreenLayout.card_popup(content.pay_amount.text))
-        popup.open()
+            cash_button.bind(on_release=lambda x: CartScreenLayout.cash_popup(content.pay_amount.text_input.text,
+                                                                              content.address.text_input.text))
+            card_button.bind(on_release=lambda x: CartScreenLayout.card_popup(content.pay_amount.text_input.text,
+                                                                              content.address.text_input.text))
+            popup.open()
 
     @staticmethod
     def clear_cart():
@@ -47,48 +55,74 @@ class CartScreenLayout(BoxLayout):
 
     @staticmethod
     def help():
-        content = ScrollView(size_hint=(.6, None))
+        content = ScrollView(do_scroll_x=False)
         body = BoxLayout(orientation='vertical')
-        body.bind(minimum_height=body.setter('height'))
-        body.add_widget(Label(text='Hi'))
-        body.add_widget(Label(text='Hi'))
-        body.add_widget(Label(text='Hi'))
-        body.add_widget(Label(text='Hi'))
-        body.add_widget(Label(text='Hi'))
-        content.add_widget(body)
+        # body.bind(minimum_height=body.setter('height'))
+        content.add_widget(Label(text='something'))
+        # content.add_widget(body)
         popup = Popup(title='Cart Screen Help', content=content, size_hint=(.625, .625))
         popup.open()
 
     @staticmethod
-    def cash_popup(amount):
-        if float(amount) < float(CartLayout.sum):
-            Popup(title='', content=Label(text='Insufficient fund'), size_hint=(0.625, 0.625)).open()
+    def cash_popup(amount, address):
+        if address == '':
+            Popup(title='', content=Label(text='Please input address'), size_hint=(.575, .575)).open()
         else:
-            content = ReceiptLayout()
-            for item in item_quantity:
-                name, quantity, drawn = item, item_quantity[item][0], item_quantity[item][1]
-                for i in item_data:
-                    if name in i:
-                        price = quantity * i[1]
-                        if drawn:
-                            price -= i[1]
-                            item_quantity[item][1] = False
-                        break
-                if quantity != 0:
-                    content.receipt_data.add_widget(CartItem(name=name,
-                                                             quantity=quantity,
-                                                             price=price,
-                                                             height=25,
-                                                             spacing=40))
-            footer = ReceiptFooter()
-            footer.item_count.text = '     ' + str(CartLayout.item_count)
-            footer.sum.text = '$' + str(CartLayout.sum) + ' '
-            content.date.text = str(date.today())
-            content.add_widget(footer)
-            Popup(title='', content=content, size_hint=(.45, .75)).open()
+            try:
+                if amount == '' or float(amount) < float(CartLayout.sum):
+                    Popup(title='', content=Label(text='Insufficient fund'), size_hint=(.575, .575)).open()
+                elif float(amount) > 10000:
+                    Popup(title='', content=Label(text='Exceeded cash maximum'), size_hint=(.575, .575)).open()
+                else:
+                    content = ReceiptLayout()
+                    for item in item_quantity:
+                        name, quantity, drawn = item, item_quantity[item][0], item_quantity[item][1]
+                        for i in item_data:
+                            if name in i:
+                                price = 0
+                                if drawn:
+                                    quantity += 1
+                                    price -= i[1]
+                                price += round(quantity * (i[1] * CartLayout.discount), 1)
+                                break
+                        if quantity != 0:
+                            content.receipt_data.add_widget(ReceiptItem(name=name,
+                                                                        quantity=quantity,
+                                                                        price=price,
+                                                                        pos_hint={'top': 1}))
+                    footer1 = ReceiptFooter()
+                    footer1.number.text = str(CartLayout.item_count)
+                    footer1.sum.text = '$' + str(round(CartLayout.sum, 1)) + ' '
+                    footer1.left_name.text = 'Item count: '
+                    footer1.right_name.text = 'Total: '
+                    footer2 = ReceiptFooter()
+                    footer2.right_box.spacing = 10
+                    footer2.number.text = str(round((1 - CartLayout.discount) * 100 +
+                                                    CartLayout.additional_discount)) + '%'
+                    footer2.sum.text = '$' + str(round(float(amount) - float(CartLayout.sum), 1))
+                    footer2.left_name.text = 'Discount:  '
+                    footer2.right_name.text = 'Returned:  '
+                    content.date.text = str(date.today())
+                    content.add_widget(footer1)
+                    content.add_widget(footer2)
+                    Popup(title='Cash Receipt', content=content, size_hint=(.4, .85)).open()
+                    LoginScreenLayout.customer.update_account('', '', '', '', '', 'paid')
+                    CartScreenLayout.clear_cart()
+            except ValueError:
+                Popup(title='', content=Label(text='Incorrect cash input'), size_hint=(.575, .575)).open()
+                return
 
     @staticmethod
-    def card_popup(amount):
+    def card_popup(amount, address):
+        if LoginScreenLayout.customer.details[3] == 'card number':
+            Popup(title='', content=Label(text='No bound card'), size_hint=(.575, .575)).open()
+        else:
+            if datetime.strptime(LoginScreenLayout.customer.details[5], "%d/%m/%y").date() < (datetime.now()).date():
+                Popup(title='', content=Label(text='Your card has expired'), size_hint=(.575, .575)).open()
+            else:
+                CartScreenLayout.cash_popup(amount, address)
+
+    def save_receipt(self):
         pass
 
 
@@ -116,33 +150,46 @@ class CartLayout(BoxLayout):
 
     @staticmethod
     def display(item_quantities, items):
+        CartLayout.discount = discount_method(LoginScreenLayout.customer.details[9])
         CartLayout.cart.clear_widgets()
         counter = 0
         CartLayout.sum = 0
         CartLayout.item_count = 0
-        for item in item_quantities:
-            if item_quantities[item] != 0:
-                counter += 1
+        if item_quantities == {}:
+            pass
+        else:
+            for item in item_quantities:
+                if item_quantities[item][0] != 0 or item_quantities[item][1]:
+                    counter += 1
         if counter == 0:
             CartLayout.cart.add_widget(Label(text='Your cart is empty'))
         else:
+            CartLayout.additional_discount = 0
             for item in item_quantities:
                 name, quantity, drawn = item, item_quantities[item][0], item_quantities[item][1]
                 for i in items:
                     if name in i:
-                        price = quantity * i[1]
+                        price = 0
                         if drawn:
+                            quantity += 1
                             price -= i[1]
-                            item_quantities[item][1] = False
+                        price += round(quantity * (i[1] * CartLayout.discount), 1)
                         CartLayout.sum += price
                         break
                 CartLayout.item_count += quantity
                 if quantity != 0:
-                    CartLayout.cart.add_widget(CartItem(name=name,
-                                                        quantity=quantity,
-                                                        price=price))
-        CartScreenLayout.body.sum.text = '$' + str(CartLayout.sum) + ' '
+                    widget = CartItem(name=name,
+                                      quantity=quantity,
+                                      price=price)
+                    CartLayout.cart.add_widget(widget)
+            if CartLayout.discount != 1:
+                if CartLayout.sum > 250:
+                    CartLayout.additional_discount += 10
+                    CartLayout.sum = CartLayout.sum * (9/CartLayout.additional_discount)
+        CartScreenLayout.body.sum.text = '$' + str(round(CartLayout.sum, 1)) + ' '
         CartScreenLayout.body.item_count.text = ' ' + str(CartLayout.item_count)
+        CartScreenLayout.body.discount.text = '  ' + str(round((1 - CartLayout.discount) * 100 +
+                                                               CartLayout.additional_discount)) + '%'
 
 
 class PayLayout(BoxLayout):
@@ -155,3 +202,16 @@ class ReceiptLayout(BoxLayout):
 
 class ReceiptFooter(BoxLayout):
     pass
+
+
+class ReceiptItem(BoxLayout):
+    name = StringProperty()
+    price = NumericProperty()
+    quantity = NumericProperty()
+    overall = NumericProperty()
+
+    def __init__(self, **kwargs):
+        super(ReceiptItem, self).__init__(**kwargs)
+        self.name = kwargs.pop('name')
+        self.quantity = kwargs.pop('quantity')
+        self.price = kwargs.pop('price')

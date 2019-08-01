@@ -17,10 +17,10 @@
 <ItemButton>:
     # draw border in canvas
     canvas:
-        Color:
-            rgba: 1, 1, 1, 0.5
-        Line:
-            rectangle: 0, 0, self.width, self.height
+#        Color:
+#            rgba: 1, 1, 1, .5
+#        Line:
+#            rectangle: 0, 0, self.width, self.height
 
     Image:
         source: root.img_path
@@ -115,6 +115,18 @@
             pos: self.pos
             size: self.size
             source: 'res/Images/metal_shelf.png'
+        Line:
+            points: self.x + self.width/10, self.y + self.height/1.375, self.x + self.width/1.1, self.y + self.height/1.375
+            width: 2
+        Line:
+            points: self.x + self.width/10, self.y + self.height/1.9, self.x + self.width/1.1, self.y + self.height/1.9
+            width: 2
+        Line:
+            points: self.x + self.width/10, self.y + self.height/3.1, self.x + self.width/1.1, self.y + self.height/3.1
+            width: 2
+        Line:
+            points: self.x + self.width/10, self.y + self.height/8, self.x + self.width/1.1, self.y + self.height/8
+            width: 2
 
     ToolBarHeader:
         screen_manager: root.screen_manager

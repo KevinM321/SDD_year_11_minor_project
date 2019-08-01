@@ -7,12 +7,11 @@
 
 #Input box designed for usr name and card details
 <InputBox@BoxLayout>:
+    text_input: _text_input
     l_text: ""
     password: False
-    input_text: ''  # for testing only
     orientation: 'horizontal'
     pos_hint: {"center_x": .5}
-    text: _text_input.text
     size_hint_x: None
     width: self.minimum_width
 
@@ -30,7 +29,6 @@
         size_hint: None, None
         size: 250, 50
         cursor_color: 0, 0, 0, 1
-        text: root.input_text
         password: root.password
 
 #Input box designed for important info (usr password)
@@ -43,7 +41,7 @@
     InputBox:
         id: _psw_input
         l_text: "Password"
-        input_text: "qwerty"
+#        input_text: "qwerty"
         password: True
         center_x: root.center_x
     PasswordMask:
@@ -55,7 +53,7 @@
 
 <LoginScreenLayout>
     usr_name_input: _usr_name_input
-    psw_input: _psw_input.psw_input
+    psw_input: _psw_input
     orientation: "vertical"
     spacing: 10
     canvas.before:
@@ -75,7 +73,6 @@
         InputBox:
             id: _usr_name_input
             l_text: 'Username'
-            input_text: "Edward"
         Widget:
             size_hint_x: None
             width: 150

@@ -1,3 +1,6 @@
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
+
 from loginscreen import *
 from shopscreen import *
 from cartscreen import *
@@ -27,9 +30,9 @@ class EMScreenManager(ScreenManager):
         super(EMScreenManager, self).on_current(self, value)
         if value == 'cart_screen':
             CartLayout.display(item_quantity, item_data)
-        if value == 'profile_screen':
+        elif value == 'profile_screen':
             ProfileLayout.body.on_profile('args')
-        if value == 'lucky_draw_screen':
+        elif value == 'lucky_draw_screen':
             LuckyDrawScreenLayout.body.on_screen()
 
 

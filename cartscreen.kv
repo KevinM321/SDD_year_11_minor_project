@@ -7,12 +7,22 @@
 
 <PayLayout>:
     pay_footer: _pay_footer
+    address: _address
     pay_amount: _pay_amount
     orientation: 'vertical'
-    BoxLayout:
+    Label:
+        bold: True
+        valign: 'middle'
+        font_size: 45
+        text: 'PAY'
+    InputBox:
+        id: _address
+        l_text: 'Delivery Address'
+        size_hint_y: .5
     InputBox:
         id: _pay_amount
         l_text: 'Pay Amount'
+        size_hint_y: .5
     BoxLayout:
         id: _pay_footer
 
@@ -22,23 +32,47 @@
     date: _date
     BoxLayout:
         orientation: 'vertical'
-        size_hint_y: .4
+        size_hint_y: .3
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: .5
+            Label:
+                size_hint_y: .6
+                bold: True
+                text: 'Energy Max'
+                pos_hint: {'center': .5}
+            Label:
+                id: _date
         Label:
-            bold: True
-            text: 'Energy Max'
-            pos_hint: {'center': .5}
-        Label:
-            id: _date
+            size_hint_y: .5
     BoxLayout:
-        orientation: 'vertical'
         id: _receipt_data
+        orientation: 'vertical'
+        canvas.before:
+            Line:
+                rectangle: self.x, self.y, self.width, self.height
     Label:
-        size_hint_y: .45
 
 <CartItem>:
     size_hint_y: None
     height: 35
     spacing: 60
+    canvas.before:
+        Line:
+            points: root.x, root.y, root.width, root.y
+            width: 1.25
+    Label:
+        text: root.name
+    Label:
+        size_hint_x: .2
+        text: str(root.quantity)
+    Label:
+        size_hint_x: .3
+        text: '$' + str(root.price)
+
+<ReceiptItem>:
+    height: 25
+    spacing: 32.5
     Label:
         text: root.name
     Label:
@@ -52,25 +86,30 @@
     orientation: 'vertical'
 
 <ReceiptFooter>:
-    item_count: _item_count
+    left_name: _left_name
+    right_name: _right_name
     sum: _sum
+    number: _number
+    right_box: _right_box
     size_hint_y: None
     height: 25
-    spacing: 40
+    spacing: 30
     Label:
-        size_hint_x: .5
+        size_hint_x: .4
     BoxLayout:
-        size_hint_x: .45
+        size_hint_x: .35
         Label:
-            text: 'Item count: '
+            id: _left_name
         Label:
         Label:
             size_hint_x: .5
-            id: _item_count
+            id: _number
     BoxLayout:
+        id: _right_box
         size_hint_x: .5
         Label:
-            text: 'Sum: '
+            id: _right_name
+            size_hint_x: .6
         Label:
             id: _sum
 
@@ -80,6 +119,7 @@
     screen_manager: root.screen_manager
     sum: _sum
     item_count: _item_count
+    discount: _discount
     ToolBarHeader:
         screen_manager: root.screen_manager
     BoxLayout:
@@ -88,7 +128,7 @@
         spacing: 60
         canvas.before:
             Color:
-                rgba: 1, 1, 1, 0.5
+                rgba: 1, 1, 1, 0.75
             Line:
                 points: 0, root.height-92.5, self.width, root.height-92.5
                 width: 2.5
@@ -112,12 +152,19 @@
         spacing: 60
         canvas.before:
             Color:
-                rgba: 1, 1, 1, 0.5
+                rgba: 1, 1, 1, 0.75
             Line:
                 points: 0, self.height+47.5, self.width, self.height+47.5
                 width: 2.5
 
         Label:
+            size_hint_x: .9
+        BoxLayout:
+            size_hint_x: .2
+            Label:
+                text: 'Discount: '
+            Label:
+                id: _discount
         BoxLayout:
             size_hint_x: .2
             Label:

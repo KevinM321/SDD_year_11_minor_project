@@ -1,4 +1,3 @@
-import Discount
 import customer_functions
 
 from kivy.uix.popup import Popup
@@ -17,25 +16,26 @@ class LoginScreenLayout(BoxLayout):
         super(LoginScreenLayout, self).__init__(**kwargs)
 
     def login(self):
-        LoginScreenLayout.customer = customer_functions.Customer(self.usr_name_input.text, self.psw_input.text)
+        LoginScreenLayout.customer = customer_functions.Customer(self.usr_name_input.text_input.text,
+                                                                 self.psw_input.psw_input.text_input.text)
         msg = LoginScreenLayout.customer.check()
         if msg:
             Popup(title='', content=Label(text=msg), size_hint=(.5, .5)).open()
         else:
             self.screen_manager.transition = CardTransition(direction='up', mode='pop')
-            Discount.discount(msg, 0)
-            self.usr_name_input.input_text = ''
-            self.psw_input.input_text = ''
+            self.usr_name_input.text_input.text = ''
+            self.psw_input.psw_input.text_input.text = ''
             self.screen_manager.current = 'shop_screen'
             if LoginScreenLayout.customer.details[6] != 'lucky_draw_date':
                 date_now = datetime.now().date()
                 drawn_date = LoginScreenLayout.customer.details[6].date()
                 delta = date_now - drawn_date
                 if delta.days >= 7:
-                    print('hi')
+                    LoginScreenLayout.customer.update_account('', '', '', '', True, '')
 
     def register(self):
-        customer = customer_functions.Customer(self.usr_name_input.text, self.psw_input.text)
+        customer = customer_functions.Customer(self.usr_name_input.text_input.text,
+                                               self.psw_input.psw_input.text_input.text)
         Popup(title='', content=Label(text=customer.register()), size_hint=(.5, .5)).open()
 
 

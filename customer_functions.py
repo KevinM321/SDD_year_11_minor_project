@@ -75,8 +75,10 @@ class Customer:
         if lucky_draw_chance == False:
             Customer.details[7] = lucky_draw_chance
             Customer.details[6] = lucky_draw_date
+        elif lucky_draw_chance == True:
+            Customer.details[7] = lucky_draw_chance
         if regular_status:
-            Customer.details[8] += 1
+            Customer.details[9] += 1
         if card_info:
             index = 2
             for item in card_info:
