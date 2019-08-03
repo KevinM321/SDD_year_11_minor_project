@@ -1,5 +1,6 @@
 from shopscreen import item_quantity, item_data
 from datetime import date, datetime
+import pickle
 
 from loginscreen import LoginScreenLayout
 from Discount import discount_method
@@ -10,7 +11,6 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
-# from kivy.lang import Builder
 
 pattern = r'^[0-9]*$'
 
@@ -43,9 +43,9 @@ class CartScreenLayout(BoxLayout):
             cash_button.bind(on_release=popup.dismiss)
             card_button.bind(on_release=popup.dismiss)
             cash_button.bind(on_release=lambda x: CartScreenLayout.cash_popup(content.pay_amount.text_input.text,
-                                                                              content.address.text_input.text))
+                                                                              content.address.text_input.text, False))
             card_button.bind(on_release=lambda x: CartScreenLayout.card_popup(content.pay_amount.text_input.text,
-                                                                              content.address.text_input.text))
+                                                                              content.address.text_input.text, True))
             popup.open()
 
     @staticmethod
@@ -64,7 +64,7 @@ class CartScreenLayout(BoxLayout):
         popup.open()
 
     @staticmethod
-    def cash_popup(amount, address):
+    def cash_popup(amount, address, card_type):
         if address == '':
             Popup(title='', content=Label(text='Please input address'), size_hint=(.575, .575)).open()
         else:
@@ -90,22 +90,37 @@ class CartScreenLayout(BoxLayout):
                                                                         quantity=quantity,
                                                                         price=price,
                                                                         pos_hint={'top': 1}))
+                    if card_type:
+                        content.card_text.text = 'Card Number: '
+                        content.card.text = '**** **** **** ' + LoginScreenLayout.customer.details[3][12:16]
                     footer1 = ReceiptFooter()
                     footer1.number.text = str(CartLayout.item_count)
-                    footer1.sum.text = '$' + str(round(CartLayout.sum, 1)) + ' '
+                    footer1.sum.text = str(round((1 - CartLayout.discount) * 100 +
+                                                 CartLayout.additional_discount)) + '%'
                     footer1.left_name.text = 'Item count: '
-                    footer1.right_name.text = 'Total: '
+                    footer1.right_name.text = 'Discount: '
                     footer2 = ReceiptFooter()
                     footer2.right_box.spacing = 10
-                    footer2.number.text = str(round((1 - CartLayout.discount) * 100 +
-                                                    CartLayout.additional_discount)) + '%'
+                    footer2.number.text = '  $' + str(round(CartLayout.sum, 1)) + '   '
                     footer2.sum.text = '$' + str(round(float(amount) - float(CartLayout.sum), 1))
-                    footer2.left_name.text = 'Discount:  '
+                    footer2.left_name.text = 'Total: '
                     footer2.right_name.text = 'Returned:  '
                     content.date.text = str(date.today())
+                    content.receipt_address.text = address
                     content.add_widget(footer1)
                     content.add_widget(footer2)
-                    Popup(title='Cash Receipt', content=content, size_hint=(.4, .85)).open()
+                    transaction_data = [LoginScreenLayout.customer.details[0],
+                                        LoginScreenLayout.customer.details[3],
+                                        date.today(),
+                                        address,
+                                        CartLayout.item_count,
+                                        round((1 - CartLayout.discount) * 100 +
+                                              CartLayout.additional_discount),
+                                        round(CartLayout.sum, 1),
+                                        round(float(amount) - float(CartLayout.sum), 1)]
+                    with open('receipts/transaction_data.p', 'ba') as f:
+                        pickle.dump(transaction_data, f)
+                    ReceiptPopup(title='Cash Receipt', content=content, size_hint=(.4, .85)).open()
                     LoginScreenLayout.customer.update_account('', '', '', '', '', 'paid')
                     CartScreenLayout.clear_cart()
             except ValueError:
@@ -113,17 +128,14 @@ class CartScreenLayout(BoxLayout):
                 return
 
     @staticmethod
-    def card_popup(amount, address):
+    def card_popup(amount, address, card_type):
         if LoginScreenLayout.customer.details[3] == 'card number':
             Popup(title='', content=Label(text='No bound card'), size_hint=(.575, .575)).open()
         else:
             if datetime.strptime(LoginScreenLayout.customer.details[5], "%d/%m/%y").date() < (datetime.now()).date():
                 Popup(title='', content=Label(text='Your card has expired'), size_hint=(.575, .575)).open()
             else:
-                CartScreenLayout.cash_popup(amount, address)
-
-    def save_receipt(self):
-        pass
+                CartScreenLayout.cash_popup(amount, address, card_type)
 
 
 class CartItem(BoxLayout):
@@ -155,6 +167,7 @@ class CartLayout(BoxLayout):
         counter = 0
         CartLayout.sum = 0
         CartLayout.item_count = 0
+        CartLayout.additional_discount = 0
         if item_quantities == {}:
             pass
         else:
@@ -164,7 +177,6 @@ class CartLayout(BoxLayout):
         if counter == 0:
             CartLayout.cart.add_widget(Label(text='Your cart is empty'))
         else:
-            CartLayout.additional_discount = 0
             for item in item_quantities:
                 name, quantity, drawn = item, item_quantities[item][0], item_quantities[item][1]
                 for i in items:
@@ -186,8 +198,8 @@ class CartLayout(BoxLayout):
                 if CartLayout.sum > 250:
                     CartLayout.additional_discount += 10
                     CartLayout.sum = CartLayout.sum * (9/CartLayout.additional_discount)
-        CartScreenLayout.body.sum.text = '$' + str(round(CartLayout.sum, 1)) + ' '
-        CartScreenLayout.body.item_count.text = ' ' + str(CartLayout.item_count)
+        CartScreenLayout.body.sum.text = '$' + str(round(CartLayout.sum, 1)) + '   '
+        CartScreenLayout.body.item_count.text = '    ' + str(CartLayout.item_count)
         CartScreenLayout.body.discount.text = '  ' + str(round((1 - CartLayout.discount) * 100 +
                                                                CartLayout.additional_discount)) + '%'
 
@@ -202,6 +214,21 @@ class ReceiptLayout(BoxLayout):
 
 class ReceiptFooter(BoxLayout):
     pass
+
+
+class ReceiptPopup(Popup):
+
+    def on_dismiss(self, **kwargs):
+        super(ReceiptPopup, self).on_dismiss(**kwargs)
+        with open('receipts/transaction_data.p', 'rb') as f:
+            n = 0
+            while True:
+                try:
+                    pickle.load(f)
+                    n += 1
+                except EOFError:
+                    break
+        self.export_to_png(('receipts/receipt' + str(n)))
 
 
 class ReceiptItem(BoxLayout):

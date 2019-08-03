@@ -17,41 +17,75 @@
         text: 'PAY'
     InputBox:
         id: _address
-        l_text: 'Delivery Address'
+        l_text: 'Address: '
         size_hint_y: .5
     InputBox:
         id: _pay_amount
-        l_text: 'Pay Amount'
+        l_text: 'Pay Amount: '
         size_hint_y: .5
     BoxLayout:
         id: _pay_footer
 
 <ReceiptLayout>
     orientation: 'vertical'
+    receipt_address: _receipt_address
     receipt_data: _receipt_data
     date: _date
+    card_text: _card_text
+    card: _card
     BoxLayout:
         orientation: 'vertical'
         size_hint_y: .3
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: .5
+            size_hint_y: .7
             Label:
-                size_hint_y: .6
                 bold: True
+                font_size: 15
                 text: 'Energy Max'
                 pos_hint: {'center': .5}
-            Label:
-                id: _date
         Label:
             size_hint_y: .5
+    AnchorLayout:
+        anchor_y: 'top'
+        height: root.height - (2 * top_height)
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+            id: _receipt_data
+            orientation: 'vertical'
     BoxLayout:
-        id: _receipt_data
-        orientation: 'vertical'
-        canvas.before:
-            Line:
-                rectangle: self.x, self.y, self.width, self.height
+        size_hint_y: .25
+        BoxLayout:
+            spacing: 22.5
+            orientation: 'vertical'
+            size_hint_y: .6
+            Label:
+                size_hint_y: .6
+                text: 'Address: '
+            Label:
+                text: 'Date: '
+                size_hint_y: .6
+            Label:
+                size_hint_y: .6
+                id: _card_text
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: .6
+            spacing: 22.5
+            Label:
+                size_hint_y: .6
+                id: _receipt_address
+            Label:
+                id: _date
+                size_hint_y: .6
+            Label:
+                size_hint_y: .6
+                id: _card
     Label:
+        size_hint_y: .2
 
 <CartItem>:
     size_hint_y: None
@@ -71,6 +105,7 @@
         text: '$' + str(root.price)
 
 <ReceiptItem>:
+    size_hint_y: None
     height: 25
     spacing: 32.5
     Label:
@@ -95,22 +130,28 @@
     height: 25
     spacing: 30
     Label:
-        size_hint_x: .4
+        size_hint_x: .2
     BoxLayout:
-        size_hint_x: .35
+        size_hint_x: .3
+        spacing: 10
         Label:
+            size_hint_x: .4
             id: _left_name
         Label:
         Label:
             size_hint_x: .5
             id: _number
+    Label:
+        size_hint_x: .05
     BoxLayout:
         id: _right_box
+        spacing: 10
         size_hint_x: .5
         Label:
             id: _right_name
-            size_hint_x: .6
+            size_hint_x: .5
         Label:
+            size_hint_x: .6
             id: _sum
 
 <CartScreenLayout>:
@@ -158,7 +199,7 @@
                 width: 2.5
 
         Label:
-            size_hint_x: .9
+            size_hint_x: .75
         BoxLayout:
             size_hint_x: .2
             Label:
@@ -174,6 +215,7 @@
         BoxLayout:
             size_hint_x: .225
             Label:
+                size_hint_x: .8
                 text: 'Sum: '
             Label:
                 id: _sum
