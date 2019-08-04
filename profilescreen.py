@@ -59,7 +59,7 @@ class ProfileScreenLayout(BoxLayout):
         # check and add the bound card number to card info popup
         if LoginScreenLayout.customer.details[3] != 'card number':
             CardInfoPopup.body.bound_card_number.text = ('**** **** **** ' +
-                                                         ayout.customer.details[3][12:16])
+                                                         LoginScreenLayout.customer.details[3][12:16])
         else:
             CardInfoPopup.body.bound_card_number.text = 'None'
 

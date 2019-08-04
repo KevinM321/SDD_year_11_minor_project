@@ -39,7 +39,7 @@
     receipt_name: _receipt_name
     BoxLayout:
         orientation: 'vertical'
-        size_hint_y: .3
+        size_hint_y: .2
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: .7
@@ -49,7 +49,7 @@
                 text: 'Energy Max'
                 pos_hint: {'center': .5}
         Label:
-            size_hint_y: .5
+            size_hint_y: .3
     AnchorLayout:
         anchor_y: 'top'
         height: root.height - (2 * top_height)
@@ -59,43 +59,62 @@
             orientation: 'vertical'
             id: _receipt_data
             orientation: 'vertical'
+    Label:
+        size_hint_y: .1
     BoxLayout:
-        size_hint_y: .25
+        size_hint_y: .35
+        orientation: 'vertical'
         BoxLayout:
-            spacing: 22.5
-            orientation: 'vertical'
-            size_hint_y: .6
+            height: 4
+            canvas.before:
+                Line:
+                    points: self.x, self.y + self.height, self.x + self.width, self.y + self.height
             Label:
                 size_hint_y: .6
                 text: 'Name: '
             Label:
+                size_hint_x: .6
+            Label:
+                id: _receipt_name
+                size_hint_y: .6
+
+        BoxLayout:
+            height: 4
+            Label:
                 size_hint_y: .6
                 text: 'Address: '
+            Label:
+                size_hint_x: .6
+            Label:
+                size_hint_y: .6
+                id: _receipt_address
+
+        BoxLayout:
+            height: 4
             Label:
                 text: 'Date: '
                 size_hint_y: .6
             Label:
-                size_hint_y: .6
-                id: _card_text
-
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: .6
-            spacing: 22.5
-            Label:
-                id: _receipt_name
-                size_hint_y: .6
-            Label:
-                size_hint_y: .6
-                id: _receipt_address
+                size_hint_x: .6
             Label:
                 id: _date
                 size_hint_y: .6
+
+        BoxLayout:
+            height: 4
+            Label:
+                size_hint_y: .6
+                id: _card_text
+            Label:
+                size_hint_x: .6
             Label:
                 size_hint_y: .6
                 id: _card
     Label:
-        size_hint_y: .2
+        canvas.before:
+            Line:
+                points: self.x, self.y, self.x + self.width, self.y
+        size_hint_y: .05
 
 # layout for each cart item instance
 <CartItem>:

@@ -73,7 +73,7 @@ class CartScreenLayout(BoxLayout):
                     Popup(title='', content=Label(text='Insufficient fund'), size_hint=(.575, .575)).open()
                 # else test if amount is bigger than the 10000 maximum then create popup
                 elif float(amount) > 10000:
-                    Popup(title='', content=Label(text='Exceeded maximum'), size_hint=(.575, .575)).open()
+                    Popup(title='', content=Label(text='Exceeded maximum of 10000'), size_hint=(.575, .575)).open()
                 # else create a receipt popup.
                 else:
                     content = ReceiptLayout()
@@ -116,7 +116,6 @@ class CartScreenLayout(BoxLayout):
                     # different details such as date, customer address and name of customer added to receipt
                     content.date.text = str(date.today())
                     content.receipt_address.text = address
-                    print(LoginScreenLayout.customer.details[0])
                     content.receipt_name.text = LoginScreenLayout.customer.details[0]
                     # transaction data including all the customer details and receipt details packed into a list
                     transaction_data = [LoginScreenLayout.customer.details[0],
@@ -186,6 +185,8 @@ class CartLayout(BoxLayout):
         # discount method called to calculate a discount based on the customer's status
         CartLayout.discount = discount_method(LoginScreenLayout.customer.details[9])
         CartLayout.cart.clear_widgets()
+        CartLayout.sum = 0
+        CartLayout.item_count = 0
         counter = 0
         CartLayout.additional_discount = 0
         # check item quantity dict is empty or not. if not creates a counter to check for each non-zero quantity item
