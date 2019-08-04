@@ -1,3 +1,4 @@
+# link to screen manager
 <ProfileScreen@Screen>:
     name: 'profile_screen'
     screen_manager: self.screen_manager
@@ -5,7 +6,7 @@
     ProfileScreenLayout:
         screen_manager: root.screen_manager
 
-#Small input box designed as date boxes in CardPopup
+# small input box designed as date boxes in card popup
 <SmallInputBox@TextInput>:
     multiline: False
     write_tab: False
@@ -14,6 +15,7 @@
     size: 250, 50
     cursor_color: 0, 0, 0, 1
 
+# layout designed for change password popup
 <PasswordPopup>:
     change_password_footer: _change_password_footer
     old_password: _old_password
@@ -33,7 +35,7 @@
         Label:
             size_hint_x: .2
 
-#Popup layout for binding or changing card bind
+# popup layout for binding card
 <CardPopup>:
     bind_card_popup_footer: _bind_card_popup_footer
     card_number: _card_number
@@ -46,21 +48,24 @@
         markup: True
         text: '[b]Card Info[b]'
         font_size: 45
+    # input box for card number
     InputBox:
         id: _card_number
         l_text: "Card Number"
         center_x: root.center_x
+    # input box for card pin
     InputBox:
         id: _card_pin
         l_text: 'Card Pin / Csv'
         center_x: root.center_x
+    # input row for card expiration date
     BoxLayout:
         size_hint_x: None
         width: self.minimum_width
         pos_hint: {"center_x": .5}
         spacing: 8
         Label:
-            text: '[b]Expiration Date d/m/y[/b]'
+            text: '[b]Expiration Date dd/mm/yy[/b]'
             markup: True
             size_hint: None, None
             size: 150, 50
@@ -73,13 +78,14 @@
         SmallInputBox:
             id: _card_year
             size: 80, 45
+    # bottom layout used for adding confirm and cancel button
     BoxLayout:
         id: _bind_card_popup_footer
         spacing: 75
         Label:
             size_hint_x: .2
 
-#Popup layout for card info
+# layout for card info popup
 <CardInfoPopup>:
     card_image: _card_image
     bound_card_number: _bound_card_number
@@ -96,6 +102,7 @@
         Label:
             size_hint_x: .15
 
+    # bottom layout containing bind and unbind button in card info popup
     BoxLayout:
         Label:
             size_hint_x: .3
@@ -112,12 +119,15 @@
         Label:
             size_hint_x: .3
 
+# image display in profile screen
 <ProfileImage>:
     source: 'res/Images/male_profile.png'
 
+# class definition for profile inside profile screen
 <ProfileLayout>:
     orientation: 'vertical'
 
+# layout for profile screen
 <ProfileScreenLayout>:
     orientation: 'vertical'
     id: screen_manager
@@ -126,6 +136,7 @@
 
     ToolBarHeader:
         screen_manager: root.screen_manager
+    # profile layout containing username, join date, image and status
     ProfileLayout:
         username: _username.__self__
         regular_status: _regular_status.__self__
@@ -146,6 +157,7 @@
                     Label:
                         id: _username
                         bold: True
+                # profile image inside profile with box outline
                 ProfileImage:
                     canvas.before:
                         Color:
@@ -176,6 +188,7 @@
             Label:
         Label:
             size_hint_y: .3
+    # footer containing buttons that call profile screen functions
     ToolBarFooter:
         Label:
             pos: 0, 1

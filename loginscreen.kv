@@ -1,11 +1,11 @@
-#Button made for when specific sized button is needed
+# button made for when specific sized button is needed
 <MyButton>:
     font_size: 16
     size_hint: None, None
     size: 125, 50
     markup: True
 
-#Input box designed for usr name and card details
+# input box designed for usr name and card details
 <InputBox@BoxLayout>:
     text_input: _text_input
     l_text: ""
@@ -14,13 +14,13 @@
     pos_hint: {"center_x": .5}
     size_hint_x: None
     width: self.minimum_width
-
+    # label containing the name
     Label:
         markup: True
         size_hint: None, None
         size: 150, 50
         text: '[b]' + root.l_text + '[/b]'
-
+    # text input box
     TextInput:
         id: _text_input
         multiline: False
@@ -31,7 +31,7 @@
         cursor_color: 0, 0, 0, 1
         password: root.password
 
-#Input box designed for important info (usr password)
+# input box designed for important info (usr password)
 <PasswordLayout@BoxLayout>:
     psw_input: _psw_input
     size_hint_x: None
@@ -44,6 +44,7 @@
 #        input_text: "qwerty"
         password: True
         center_x: root.center_x
+    # password show/hid button
     PasswordMask:
         psw_input: _psw_input
         text: 'Show'
@@ -51,21 +52,24 @@
         size_hint_x: None
         width: 100
 
+# login screen layout
 <LoginScreenLayout>
     usr_name_input: _usr_name_input
     psw_input: _psw_input
     orientation: "vertical"
     spacing: 10
+    # background image
     canvas.before:
         Rectangle:
             pos: self.pos
             size: self.size
             source: 'res/Images/metal_grid.jpg'
-
+    # logo at the top of the login screen
     Image:
         source: 'res/Images/energy_max.png'
         center_x: root.center_x
 
+    # username input row
     BoxLayout:
         size_hint_x: None
         width: self.minimum_width
@@ -77,9 +81,11 @@
             size_hint_x: None
             width: 150
 
+    # password input row
     PasswordLayout:
         id: _psw_input
 
+    # login and register button row
     BoxLayout:
 
         orientation: 'horizontal'
@@ -103,6 +109,7 @@
         text: 'Made by Kevin Min'
         size_hint: 1, .5
 
+# link to screen manager
 <LoginScreen@Screen>:
     name: 'login_screen'
     screen_manager: self.screen_manager

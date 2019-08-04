@@ -1,6 +1,7 @@
 #:set top_height 45
 #:import CardTransition kivy.uix.screenmanager.CardTransition
 
+# link to screen manager
 <ShopScreen@Screen>:
     name: 'shop_screen'
     screen_manager: self.screen_manager
@@ -8,31 +9,27 @@
     ShopScreenLayout:
         screen_manager: root.screen_manager
 
+# appearance of an interface button used for screen header and footer
 <InterfaceButton>:
     size_hint: None, None
     markup: True
     font_size: 15
     size: 100, 45
 
+# display of item button
 <ItemButton>:
-    # draw border in canvas
-    canvas:
-#        Color:
-#            rgba: 1, 1, 1, .5
-#        Line:
-#            rectangle: 0, 0, self.width, self.height
-
     Image:
         source: root.img_path
         pos_hint: {"bottom": 0}
 
+# display of image button inside item popup
 <ImageButton>:
     size_hint: None, None
     size: 200, 100
     pos_hint: {'center_x': .5}
     id: img_path
 
-
+# layout of screen header
 <ToolBarHeader>:
     orientation: 'horizontal'
     id: screen_manager
@@ -68,6 +65,7 @@
         on_release: root.screen_manager.current = 'lucky_draw_screen'
         text: '[b]Lucky Draw[/b]'
 
+# appearance of screen footer
 <ToolBarFooter>:
     orientation: 'horizontal'
     size_hint: 1, None
@@ -79,6 +77,7 @@
             pos: self.pos
             size: self.size
 
+# layout for each item popup
 <PopupLayout>:
     orientation: 'vertical'
     ImageButton:
@@ -90,6 +89,7 @@
         text: '$' + str(root.price)
     Label:
         text: root.description
+    # layout for adding and removing item from cart
     BoxLayout:
         Button:
             text:'-'
@@ -104,12 +104,13 @@
                 try: root.quantity += 1
                 except ValueError: pass
 
-
+# layout for shop screen
 <ShopScreenLayout>:
     orientation: 'vertical'
     id: screen_manager
     screen_manager: root.screen_manager
     spacing: 20
+    # adding background image and shelf lines
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -131,6 +132,7 @@
     ToolBarHeader:
         screen_manager: root.screen_manager
 
+    # item layout
     ItemLayout:
         cols: 3
         padding: 10

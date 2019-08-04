@@ -1,5 +1,6 @@
 #:import Color kivy.graphics
 
+# link to screen manager
 <LuckyDrawScreen@Screen>:
     name: 'lucky_draw_screen'
     screen_manager: self.screen_manager
@@ -9,7 +10,7 @@
 
 <LuckyDrawImage>:
 
-
+# lucky draw screen
 <LuckyDrawScreenLayout>:
     lucky_draw_layout: _lucky_draw_layout.__self__
     orientation: 'vertical'
@@ -19,7 +20,9 @@
     ToolBarHeader:
         screen_manager: root.screen_manager
 
+    # box layout containing the lucky draw image
     BoxLayout:
+        # draw a circle around lucky draw image
         canvas.before:
             Color:
                 rgba: 1, 1, 1, 0.75

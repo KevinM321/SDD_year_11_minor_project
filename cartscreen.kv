@@ -1,3 +1,4 @@
+# link to screen manager
 <CartScreen@Screen>:
     name: 'cart_screen'
     screen_manager: self.screen_manager
@@ -5,6 +6,7 @@
     CartScreenLayout:
         screen_manager: root.screen_manager
 
+# layout for pay popup
 <PayLayout>:
     pay_footer: _pay_footer
     address: _address
@@ -26,6 +28,7 @@
     BoxLayout:
         id: _pay_footer
 
+# layout for receipt popup
 <ReceiptLayout>
     orientation: 'vertical'
     receipt_address: _receipt_address
@@ -33,6 +36,7 @@
     date: _date
     card_text: _card_text
     card: _card
+    receipt_name: _receipt_name
     BoxLayout:
         orientation: 'vertical'
         size_hint_y: .3
@@ -63,6 +67,9 @@
             size_hint_y: .6
             Label:
                 size_hint_y: .6
+                text: 'Name: '
+            Label:
+                size_hint_y: .6
                 text: 'Address: '
             Label:
                 text: 'Date: '
@@ -76,6 +83,9 @@
             size_hint_y: .6
             spacing: 22.5
             Label:
+                id: _receipt_name
+                size_hint_y: .6
+            Label:
                 size_hint_y: .6
                 id: _receipt_address
             Label:
@@ -87,6 +97,7 @@
     Label:
         size_hint_y: .2
 
+# layout for each cart item instance
 <CartItem>:
     size_hint_y: None
     height: 35
@@ -104,6 +115,7 @@
         size_hint_x: .3
         text: '$' + str(root.price)
 
+# layout for each receipt item instance
 <ReceiptItem>:
     size_hint_y: None
     height: 25
@@ -117,9 +129,11 @@
         size_hint_x: .3
         text: '$' + str(root.price)
 
+# layout for cart layout in cart screen
 <CartLayout>:
     orientation: 'vertical'
 
+# layout for each row at the bottom of the receipt popup
 <ReceiptFooter>:
     left_name: _left_name
     right_name: _right_name
@@ -154,6 +168,7 @@
             size_hint_x: .6
             id: _sum
 
+# layout for the whole cart screen
 <CartScreenLayout>:
     orientation: 'vertical'
     id: screen_manager
@@ -163,6 +178,7 @@
     discount: _discount
     ToolBarHeader:
         screen_manager: root.screen_manager
+    # layout of a row at the top of cart layout
     BoxLayout:
         size_hint_y: None
         height: 65
@@ -181,12 +197,14 @@
         Label:
             size_hint_x: .3
             text: 'Price'
+    # cart layout
     AnchorLayout:
         anchor_y: 'top'
         height: root.height - (2 * top_height)
         CartLayout:
             size_hint_y: None
             height: self.minimum_height
+    # layout of a row at the bottom of cart layout to display total amount, item count and total discount
     BoxLayout:
         size_hint_y: None
         height: 35
@@ -221,9 +239,6 @@
                 id: _sum
 
     ToolBarFooter:
-        InterfaceButton:
-            on_release: root.help()
-            text: '[b]Help[/b]'
         Label:
             pos: 0, 1
             size_hint: .8, 1
