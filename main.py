@@ -37,7 +37,7 @@ class EMScreenManager(ScreenManager):
         # if current is profile screen call the on_profile function
         elif value == 'profile_screen':
             ProfileLayout.body.on_profile('args')
-        # if current is lucky draw screen call the on_screen funcion
+        # if current is lucky draw screen call the on_screen function
         elif value == 'lucky_draw_screen':
             LuckyDrawScreenLayout.body.on_screen()
 
