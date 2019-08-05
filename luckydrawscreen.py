@@ -84,7 +84,7 @@ class LuckyDrawImage(Image):
                                                                           '\nCome back next week for more',
                                                                           halign='center'))
             content = BoxLayout(orientation='vertical')
-            content.add_widget(Label(text=("You've drawn " + LuckyDrawImage.item[0]+' !')))
+            content.add_widget(Label(text=("You've drawn " + LuckyDrawImage.item[0]+'!')))
             content.add_widget(Image(source=LuckyDrawImage.item[3]))
             content.add_widget(Label(text='Come back next week for more!'))
             Popup(title='',

@@ -9,7 +9,7 @@ from kivy.uix.screenmanager import CardTransition
 from datetime import datetime
 
 
-# class for layout of login screen
+# class for layout inside login screen
 class LoginScreenLayout(BoxLayout):
     customer = ''
 

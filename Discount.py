@@ -1,4 +1,4 @@
-# called to calculate the discount for the logged in customer according to that customer's paid time
+# called to calculate the discount for the logged in customer according to that customer's regular status
 def discount_method(regular_status):
     discount_rate = 1
     if regular_status >= 3:

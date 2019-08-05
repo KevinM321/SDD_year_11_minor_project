@@ -62,9 +62,12 @@ class CartScreenLayout(BoxLayout):
     # method called when cash button on pay popup is pressed
     @staticmethod
     def cash_popup(amount, address, card_type):
-        # test if address input is empty and create a popup
+        # check if address input is empty and create a popup
         if address == '':
             Popup(title='', content=Label(text='Please input address'), size_hint=(.575, .575)).open()
+        # check if address can fit on the receipt or not
+        elif len(address) > 16:
+            Popup(title='', content=Label(text='Exceeded maximum of 16 characters'), size_hint=(.575, .575)).open()
         # test to see if the pay amount can be converted to float
         else:
             try:
@@ -131,7 +134,7 @@ class CartScreenLayout(BoxLayout):
                     with open('receipts/transaction_data.p', 'ba') as f:
                         pickle.dump(transaction_data, f)
                     # create receipt popup, clear the shopping cart and update the number of times the customer paid
-                    ReceiptPopup(title='Cash Receipt', content=content, size_hint=(.4, .85)).open()
+                    ReceiptPopup(title='Receipt', content=content, size_hint=(.4, .85)).open()
                     LoginScreenLayout.customer.update_account('', '', '', '', '', 'paid')
                     CartScreenLayout.clear_cart()
             # if input amount is not convertible create popup
@@ -207,10 +210,10 @@ class CartLayout(BoxLayout):
                 for i in items:
                     if name in i:
                         price = 0
-                        # if the boolean drawn is true, then add a free one to that item in item quantity
+                        # if the boolean drawn is true, then add one quantity to that item in item quantity
                         if drawn:
                             quantity += 1
-                            price -= i[1]
+                            price -= i[1] * CartLayout.discount
                         price += round(quantity * (i[1] * CartLayout.discount), 1)
                         CartLayout.sum += price
                         break
@@ -220,7 +223,7 @@ class CartLayout(BoxLayout):
                                       quantity=quantity,
                                       price=price)
                     CartLayout.cart.add_widget(widget)
-            # if order more than 250 and customer is regular add another 10% discount
+            # if order more than 250 and customer regular add 10% discount, this is a part of discount calculation
             if CartLayout.discount != 1:
                 if CartLayout.sum > 250:
                     CartLayout.additional_discount += 10
@@ -251,7 +254,7 @@ class ReceiptFooter(BoxLayout):
 class ReceiptPopup(Popup):
 
     # function called when the popup is dismissed
-    def on_dismiss(self, **kwargs):
+    def on_open(self, **kwargs):
         super(ReceiptPopup, self).on_dismiss(**kwargs)
         # check how many receipts there are.
         with open('receipts/transaction_data.p', 'rb') as f:
