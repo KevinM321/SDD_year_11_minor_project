@@ -130,6 +130,9 @@ class CartScreenLayout(BoxLayout):
                                               CartLayout.additional_discount),
                                         round(CartLayout.sum, 1),
                                         round(float(amount) - float(CartLayout.sum), 1)]
+                    # check if paid using card and store card number
+                    if card_type:
+                        transaction_data.append(LoginScreenLayout.customer.details[3])
                     # transaction data saved into a pickle file
                     with open('receipts/transaction_data.p', 'ba') as f:
                         pickle.dump(transaction_data, f)
