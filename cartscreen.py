@@ -256,17 +256,11 @@ class ReceiptPopup(Popup):
     # function called when the popup is dismissed
     def on_open(self, **kwargs):
         super(ReceiptPopup, self).on_dismiss(**kwargs)
-        # check how many receipts there are.
-        with open('receipts/transaction_data.p', 'rb') as f:
-            n = 0
-            while True:
-                try:
-                    pickle.load(f)
-                    n += 1
-                except EOFError:
-                    break
-        # save the receipt data as a png with a number tag at the end so it won't be overwritten
-        self.export_to_png(('receipts/receipt' + str(n)))
+        # save the receipt data as a png with a customer name in front and number tag at the end
+        self.export_to_png(('receipts/' +
+                            LoginScreenLayout.customer.details[0] +
+                            '_receipts_' +
+                            str(LoginScreenLayout.customer.details[9])))
 
 
 # class for instances of item in receipt
